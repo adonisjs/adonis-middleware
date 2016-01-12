@@ -1,13 +1,9 @@
 'use strict'
 
-/*
-|--------------------------------------------------------------------------
-| CORS
-|--------------------------------------------------------------------------
-|
-| Cors middlware will allow/disallow request based upon configuration
-| defined in config/cors.js file.
-|
+/**
+ * adonis-middleware
+ * Copyright(c) 2015-2016 Harminder Virk
+ * MIT Licensed
 */
 
 class Cors {
@@ -30,11 +26,11 @@ class Cors {
    * @public
    */
   _getOrigin (origin) {
+    if (typeof (this.origin) === 'function') {
+      this.origin = this.origin(origin)
+    }
     if (this.origin === true) {
       return origin
-    }
-    if (typeof (this.origin) === 'function') {
-      return this.origin(origin)
     }
     return this.origin
   }
@@ -48,11 +44,11 @@ class Cors {
    * @public
    */
   _getHeaders (headers) {
+    if (typeof (this.headers) === 'function') {
+      this.headers = this.headers(headers)
+    }
     if (this.headers === true) {
       return headers
-    }
-    if (typeof (this.headers) === 'function') {
-      return this.headers(headers)
     }
     return this.headers
   }

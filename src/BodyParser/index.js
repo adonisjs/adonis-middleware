@@ -1,13 +1,9 @@
 'use strict'
 
-/*
-|--------------------------------------------------------------------------
-| Body Parser
-|--------------------------------------------------------------------------
-|
-| Body parser parses request body to fetch post data and form uploads.
-| Let this file be here if you want to parse request body
-|
+/**
+ * adonis-middleware
+ * Copyright(c) 2015-2016 Harminder Virk
+ * MIT Licensed
 */
 
 const formidable = use('formidable')

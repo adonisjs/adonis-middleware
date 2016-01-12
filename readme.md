@@ -16,5 +16,5 @@ Please do not send pull requests for project specific middleware, this repo is s
 
 1. Fork this repo.
 2. Create a feature branch for the middleware you want to add.
-3. Keep middleware inside a seperate directory with a readme file.
+3. Keep middleware inside a seperate directory.
 4. Once done, submit a pull request on to `develop` branch.

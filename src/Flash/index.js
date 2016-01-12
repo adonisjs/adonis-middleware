@@ -1,15 +1,11 @@
 'use strict'
 
-/*
-|--------------------------------------------------------------------------
-| Flash Sessions
-|--------------------------------------------------------------------------
-|
-| Flash sessions are one time only session values. It is helpful for
-| scanerios where you want to display errors messages on form these
-| errors will live for one time only.
-|
+/**
+ * adonis-middleware
+ * Copyright(c) 2015-2016 Harminder Virk
+ * MIT Licensed
 */
+
 
 class Flash {
 
