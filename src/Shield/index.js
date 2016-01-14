@@ -40,7 +40,7 @@ class Shield {
    */
   _setupCsp (request, response) {
     const cspValues = csp.build(request.request, this.shieldConfig.csp)
-    let cspString = ''
+    let metaTags = []
 
     /**
      * adding request helper method to return
@@ -58,14 +58,14 @@ class Shield {
      */
     Object.keys(cspValues).forEach((key) => {
       response.header(key, cspValues[key])
-      cspString += `<meta http-equiv="${key}" content="${cspValues[key]}">\n`
+      metaTags.push(`<meta http-equiv="${key}" content="${cspValues[key]}">`)
     })
 
     /**
      * @description view global variable to return csp string
      * as meta tags.
      */
-    this.view.global('cspMeta', cspString)
+    this.view.global('cspMeta', metaTags.join('\n'))
 
     /**
      * @description nonce value to be used under view
