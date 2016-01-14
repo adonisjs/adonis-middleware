@@ -1,0 +1,53 @@
+{
+  "name": "adonis-middleware",
+  "version": "1.0.0",
+  "description": "List of official middleware for adonis-framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "_mocha test --bail",
+    "coverage": "istanbul cover _mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adonisjs/adonis-middleware.git"
+  },
+  "keywords": [
+    "adonis",
+    "http-middleware",
+    "middleware",
+    "adonisjs"
+  ],
+  "author": "adonisjs",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/adonisjs/adonis-middleware/issues"
+  },
+  "homepage": "https://github.com/adonisjs/adonis-middleware#readme",
+  "dependencies": {
+    "csrf": "^3.0.0",
+    "formidable": "^1.0.17",
+    "node-csp": "^1.0.1",
+    "node-guard": "^1.0.0",
+    "node-uuid": "^1.4.7",
+    "raw-body": "^2.1.5"
+  },
+  "peerDependencies": {
+    "adonis-fold": "^2.0.0"
+  },
+  "devDependencies": {
+    "adonis-fold": "^2.0.0",
+    "chai": "^3.4.1",
+    "co": "^4.6.0",
+    "co-mocha": "^1.1.2",
+    "cz-conventional-changelog": "^1.1.5",
+    "istanbul": "^0.4.2",
+    "mocha": "^2.3.4",
+    "standard": "^5.4.1",
+    "supertest": "^1.1.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
