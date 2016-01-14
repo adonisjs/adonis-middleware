@@ -6,9 +6,7 @@
  * MIT Licensed
 */
 
-
 class Flash {
-
   constructor (View) {
     this.view = View
   }
@@ -30,7 +28,6 @@ class Flash {
     })
     yield next
   }
-
 }
 
 module.exports = Flash

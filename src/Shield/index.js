@@ -168,10 +168,10 @@ class Shield {
      * reading csrf token from all possible sources
      * @type {String}
      */
-    const csrfToken = request.input('_csrf')
-    || request.header('csrf-token')
-    || request.header('x-csrf-token')
-    || request.header('x-xsrf-token')
+    const csrfToken = request.input('_csrf') ||
+    request.header('csrf-token') ||
+    request.header('x-csrf-token') ||
+    request.header('x-xsrf-token')
 
     /**
      * @description throw error when unable to verify csrf token
