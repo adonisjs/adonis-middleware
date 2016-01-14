@@ -39,9 +39,15 @@
     "chai": "^3.4.1",
     "co": "^4.6.0",
     "co-mocha": "^1.1.2",
+    "cz-conventional-changelog": "^1.1.5",
     "istanbul": "^0.4.2",
     "mocha": "^2.3.4",
     "standard": "^5.4.1",
     "supertest": "^1.1.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
