@@ -185,6 +185,22 @@ class Shield {
   }
 
   /**
+   * @description tells whether the request current uri is in
+   * filterUris list or not
+   * @method _isFiltered
+   * @param  {Object}    request
+   * @param  {Array}    filterUris
+   * @return {Boolean}
+   * @private
+   */
+  _isFiltered (request, filterUris) {
+    if (filterUris.length) {
+      return request.match(filterUris)
+    }
+    return false
+  }
+
+  /**
    * @description middleware handle method to setup all security
    * headers and setup Csrf token too
    * @method handle
@@ -197,6 +213,7 @@ class Shield {
   * handle (request, response, next) {
     const enable = this.shieldConfig.csrf.enable
     const methods = this.shieldConfig.csrf.methods
+    const filterUris = this.shieldConfig.csrf.filterUris
     const requestMethod = request.method()
     this._setupCsp(request, response)
     this._setupGuard(request, response)
@@ -210,7 +227,7 @@ class Shield {
     }
 
     const csrfSecret = yield request.session.get(this.sessionKey)
-    if (methods.indexOf(requestMethod) > -1) {
+    if (methods.indexOf(requestMethod) > -1 && !this._isFiltered(request, filterUris)) {
       this._validateCsrf(request, csrfSecret)
     }
     yield this._setupCsrf(request, response, csrfSecret)

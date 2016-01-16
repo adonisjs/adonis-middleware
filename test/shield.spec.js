@@ -21,7 +21,8 @@ require('co-mocha')
 const defaultConfig = {
   csrf: {
     enable: false,
-    methods: ['POST']
+    methods: ['POST'],
+    filterUris: []
   },
   csp: {
     directives: {}
@@ -49,6 +50,9 @@ describe('Sheild', function () {
       req.request = req
       req.method = function () {
         return 'POST'
+      }
+      req.match = function () {
+        return false
       }
       const response = {}
       response.header = function (key, value) {
@@ -93,6 +97,9 @@ describe('Sheild', function () {
       req.method = function () {
         return 'GET'
       }
+      req.match = function () {
+        return false
+      }
       const response = {}
       response.header = function (key, value) {
         res.setHeader(key, value)
@@ -135,6 +142,9 @@ describe('Sheild', function () {
       }
       req.method = function () {
         return 'POST'
+      }
+      req.match = function () {
+        return false
       }
       const response = {}
       response.header = function (key, value) {
@@ -183,6 +193,9 @@ describe('Sheild', function () {
       }
       req.header = function (key) {
         return req.headers[key]
+      }
+      req.match = function () {
+        return false
       }
 
       const response = {}
@@ -234,6 +247,116 @@ describe('Sheild', function () {
       req.header = function (key) {
         return req.headers[key]
       }
+      req.match = function () {
+        return false
+      }
+
+      const response = {}
+      response.header = function (key, value) {
+        res.setHeader(key, value)
+      }
+      response.cookie = function () {}
+
+      co(function * () {
+        return yield shield.handle(req, response, function * () {})
+      })
+      .then(function () {
+        res.writeHead(200, {"Content-type": "application/json"})
+        res.end()
+      })
+      .catch(function (error) {
+        console.log(error)
+        res.writeHead(error.status, {"Content-type": "application/json"})
+        res.write(JSON.stringify({body:error.message}))
+        res.end()
+      })
+    })
+    yield supertest(server).get('/').expect(200)
+  })
+
+  it('should get deny request with an error when csrf secret is available but csrf token is missing', function * () {
+    const newConfig = defaultConfig
+    newConfig.csrf.enable = true
+    const Config = {
+      get: function () {
+        return newConfig
+      }
+    }
+    const shield = new Shield(Config, View)
+    const server = http.createServer(function (req, res) {
+      req.request = req
+      req.session = {
+        get: function () {
+          return csrf.secret()
+        },
+        put: function * () {}
+      }
+      req.method = function () {
+        return 'POST'
+      }
+      req.input = function () {
+        return ''
+      }
+      req.header = function (key) {
+        return req.headers[key]
+      }
+      req.match = function () {
+        return false
+      }
+
+      const response = {}
+      response.header = function (key, value) {
+        res.setHeader(key, value)
+      }
+      response.cookie = function () {}
+
+      co(function * () {
+        return yield shield.handle(req, response, function * () {})
+      })
+      .then(function () {
+        res.writeHead(200, {"Content-type": "application/json"})
+        res.end()
+      })
+      .catch(function (error) {
+        res.writeHead(error.status, {"Content-type": "application/json"})
+        res.write(JSON.stringify({body:error.message}))
+        res.end()
+      })
+    })
+    const response = yield supertest(server).get('/').expect(403)
+    expect(response.body.body).to.match(/csrf token mismatch/)
+  })
+
+  it('should skip request when url matches one of the filterUris', function * () {
+    const newConfig = defaultConfig
+    newConfig.csrf.enable = true
+    newConfig.csrf.filterUris = ['']
+    const Config = {
+      get: function () {
+        return newConfig
+      }
+    }
+    const shield = new Shield(Config, View)
+    const server = http.createServer(function (req, res) {
+      req.request = req
+      req.session = {
+        get: function * () {
+          return undefined
+        },
+        put: function * () {}
+      }
+      req.method = function () {
+        return 'POST'
+      }
+      req.input = function () {
+        return ''
+      }
+      req.header = function (key) {
+        return req.headers[key]
+      }
+      req.match = function () {
+        return true
+      }
 
       const response = {}
       response.header = function (key, value) {
@@ -284,6 +407,9 @@ describe('Sheild', function () {
       }
       req.header = function (key) {
         return req.headers[key]
+      }
+      req.match = function () {
+        return false
       }
 
       const response = {}
@@ -349,6 +475,9 @@ describe('Sheild', function () {
       req.header = function (key) {
         return req.headers[key]
       }
+      req.match = function () {
+        return false
+      }
 
       const response = {}
       response.header = function (key, value) {
@@ -413,6 +542,9 @@ describe('Sheild', function () {
       req.header = function (key) {
         return req.headers[key]
       }
+      req.match = function () {
+        return false
+      }
 
       const response = {}
       response.header = function (key, value) {
@@ -468,6 +600,9 @@ describe('Sheild', function () {
       req.header = function (key) {
         return req.headers[key]
       }
+      req.match = function () {
+        return false
+      }
 
       const response = {}
       response.header = function (key, value) {
@@ -517,6 +652,9 @@ describe('Sheild', function () {
 
       req.header = function (key) {
         return req.headers[key]
+      }
+      req.match = function () {
+        return false
       }
 
       const response = {}
@@ -575,6 +713,9 @@ describe('Sheild', function () {
       }
       response.cookie = function (key, value) {
       }
+      req.match = function () {
+        return false
+      }
 
       co(function * () {
         return yield shield.handle(req, response, function * () {})
@@ -617,6 +758,9 @@ describe('Sheild', function () {
 
       req.header = function (key) {
         return req.headers[key]
+      }
+      req.match = function () {
+        return false
       }
 
       const response = {}
@@ -668,6 +812,9 @@ describe('Sheild', function () {
 
       req.header = function (key) {
         return req.headers[key]
+      }
+      req.match = function () {
+        return false
       }
 
       const response = {}
@@ -729,6 +876,9 @@ describe('Sheild', function () {
 
       req.header = function (key) {
         return req.headers[key]
+      }
+      req.match = function () {
+        return false
       }
 
       const response = {}
