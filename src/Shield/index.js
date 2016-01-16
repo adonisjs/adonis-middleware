@@ -197,6 +197,7 @@ class Shield {
   * handle (request, response, next) {
     const enable = this.shieldConfig.csrf.enable
     const methods = this.shieldConfig.csrf.methods
+    const filterUris = this.shieldConfig.csrf.filterUris
     const requestMethod = request.method()
     this._setupCsp(request, response)
     this._setupGuard(request, response)
@@ -210,7 +211,7 @@ class Shield {
     }
 
     const csrfSecret = yield request.session.get(this.sessionKey)
-    if (methods.indexOf(requestMethod) > -1) {
+    if (methods.indexOf(requestMethod) > -1 && !request.match(filterUris)) {
       this._validateCsrf(request, csrfSecret)
     }
     yield this._setupCsrf(request, response, csrfSecret)
