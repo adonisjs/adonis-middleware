@@ -24,41 +24,15 @@ describe('BodyParser', function() {
     const bodyParser = new BodyParser()
     const server = http.createServer(function (req, res) {
       req.request = req
-      req.is = function () {
-        return false
-      }
+      req.is = function (types) {
+        return types.indexOf(req.headers['content-type']) > -1
+       }
       co(function * () {
         return yield bodyParser.handle(req, res, function *() {})
       })
       .then(function () {
         res.writeHead(200, {"content-type": "application/json"})
         res.write(JSON.stringify(req.request._body))
-        res.end()
-      })
-      .catch(function (error) {
-        res.writeHead(500, {"Content-Type": "application/json"})
-        res.write(JSON.stringify({error: error.message}))
-        res.end()
-      })
-    })
-
-    const response = yield supertest(server).post('/').field('name', 'virk').field('age', 22).expect(200)
-    expect(response.body).deep.equal({name: 'virk', age: '22'})
-  })
-
-  it('should parse http request raw body and attach _raw object with request object', function * () {
-    const bodyParser = new BodyParser()
-    const server = http.createServer(function (req, res) {
-      req.request = req
-      req.is = function () {
-        return true
-      }
-      co(function * () {
-        return yield bodyParser.handle(req, res, function *() {})
-      })
-      .then(function () {
-        res.writeHead(200, {"content-type": "application/json"})
-        res.write(JSON.stringify(req.request._raw))
         res.end()
       })
       .catch(function (error) {
@@ -69,16 +43,43 @@ describe('BodyParser', function() {
       })
     })
 
-    const response = yield supertest(server).post('/').set('Accept', 'text/html').send({name: 'virk'}).expect(200)
-    expect(response.body).to.equal(JSON.stringify({name: 'virk'}))
+    const response = yield supertest(server).post('/').send({name: 'virk', age: 22}).type('form').expect(200)
+    expect(response.body).deep.equal({name: 'virk', age: '22'})
+  })
+
+  it('should parse http request json body', function * () {
+    const bodyParser = new BodyParser()
+    const server = http.createServer(function (req, res) {
+      req.request = req
+      req.is = function (types) {
+        return types.indexOf(req.headers['content-type']) > -1
+      }
+      co(function * () {
+        return yield bodyParser.handle(req, res, function *() {})
+      })
+      .then(function () {
+        res.writeHead(200, {"content-type": "application/json"})
+        res.write(JSON.stringify(req.request._body))
+        res.end()
+      })
+      .catch(function (error) {
+        console.log(error)
+        res.writeHead(500, {"Content-Type": "application/json"})
+        res.write(JSON.stringify({error: error.message}))
+        res.end()
+      })
+    })
+
+    const response = yield supertest(server).post('/').set('Accept', 'application/json').send({name: 'virk'}).expect(200)
+    expect(response.body).deep.equal({name: 'virk'})
   })
 
   it('should parse http request and attach uploaded files to _files', function * () {
     const bodyParser = new BodyParser()
     const server = http.createServer(function (req, res) {
       req.request = req
-      req.is = function () {
-        return false
+      req.is = function (types) {
+        return types[0] === 'multipart/form-data'
       }
       co(function * () {
         return yield bodyParser.handle(req, res, function *() {})

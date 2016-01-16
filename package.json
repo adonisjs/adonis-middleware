@@ -25,8 +25,10 @@
   },
   "homepage": "https://github.com/adonisjs/adonis-middleware#readme",
   "dependencies": {
+    "co-better-body": "^1.0.1",
     "csrf": "^3.0.0",
     "formidable": "^1.0.17",
+    "iconv-lite": "^0.4.13",
     "node-csp": "^1.0.1",
     "node-guard": "^1.0.0",
     "node-uuid": "^1.4.7",
