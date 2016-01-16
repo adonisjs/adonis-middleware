@@ -21,7 +21,8 @@ require('co-mocha')
 const defaultConfig = {
   csrf: {
     enable: false,
-    methods: ['POST']
+    methods: ['POST'],
+    filterUris: []
   },
   csp: {
     directives: {}
@@ -326,9 +327,10 @@ describe('Sheild', function () {
     expect(response.body.body).to.match(/csrf token mismatch/)
   })
 
-  it('should skip request when url matches one one of the filterUris', function * () {
+  it('should skip request when url matches one of the filterUris', function * () {
     const newConfig = defaultConfig
     newConfig.csrf.enable = true
+    newConfig.csrf.filterUris = ['']
     const Config = {
       get: function () {
         return newConfig
