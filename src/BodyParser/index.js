@@ -7,45 +7,68 @@
 */
 
 const formidable = use('formidable')
-const rawBody = use('raw-body')
+const coBody = use('co-better-body')
 
 class BodyParser {
+
+  get contentTypes () {
+    return {
+      json: [
+        'application/json',
+        'application/json-patch+json',
+        'application/vnd.api+json',
+        'application/csp-report'
+      ],
+      form: [
+        'application/x-www-form-urlencoded'
+      ],
+      multipart: [
+        'multipart/form-data'
+      ]
+    }
+  }
+
   /**
-   * @description parses request body to fetch post data and form
-   * @method parse
-   * uploads
-   * @param  {Object}   form
+   * @description parser multipart form data
+   * @method _multipart
    * @param  {Object}   request
-   * @return {void}
-   * @public
-  */
-  parse (form, request) {
+   * @return {Oject}
+   * @private
+   */
+  _multipart (request) {
     return new Promise(function (resolve, reject) {
-      /**
-       * here we check for request type, handle text/*
-       * request via raw body parser
-       */
-      if (request.is('text/*')) {
-        rawBody(request.request)
-          .then(function (buffer) {
-            resolve({raw: buffer.toString()})
-          }).catch(reject)
-        return
-      }
-      /**
-       * here we parse json data, multipart uploads and x-form-urlencoded
-       * request
-       */
+      const form = new formidable.IncomingForm()
       form.parse(request.request, function (error, fields, files) {
-        /**
-         * reject with error if there is an error
-         */
         if (error) {
           return reject(error)
         }
         resolve({fields, files})
       })
     })
+  }
+
+  /**
+   * @description parses request body to fetch post data and form
+   * @method parse
+   * uploads
+   * @param  {Object}   form
+   * @param  {Object}   request
+   * @return {Object}
+   * @private
+  */
+  * _parse (request) {
+    let formBody = {
+      fields: {},
+      files: {}
+    }
+    if (request.is(this.contentTypes.json)) {
+      formBody.fields = yield coBody.json(request.request)
+    } else if (request.is(this.contentTypes.form)) {
+      formBody.fields = yield coBody.form(request.request)
+    } else if (request.is(this.contentTypes.multipart)) {
+      formBody = yield this._multipart(request)
+    }
+    return formBody
   }
 
   /**
@@ -59,37 +82,10 @@ class BodyParser {
    * @public
    */
   * handle (request, response, next) {
-    /**
-     * parsing incoming request form
-     */
-    const form = new formidable.IncomingForm()
-
-    try {
-      const formFields = yield this.parse(form, request)
-      /**
-       * make sure to set request body, so that
-       * adonnis request can use it
-       * @type {Object}
-       */
-
-      request.request._body = formFields.fields || null
-      /**
-       * make sure to set uploaded files , so that
-       * adonis request can return uploaded files.
-       * @type {Object}
-       */
-
-      request._files = formFields.files || null
-      /**
-       * Setting up request raw body if available
-       * @type {String}
-       */
-      request._raw = formFields.raw || null
-
-      yield next
-    } catch (e) {
-      throw e
-    }
+    const formFields = yield this._parse(request)
+    request.request._body = formFields.fields
+    request._files = formFields.files
+    yield next
   }
 }
 
