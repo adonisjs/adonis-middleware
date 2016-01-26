@@ -26,7 +26,10 @@ describe('BodyParser', function() {
       req.request = req
       req.is = function (types) {
         return types.indexOf(req.headers['content-type']) > -1
-       }
+      }
+      req.hasBody = function () {
+        return true
+      }
       co(function * () {
         return yield bodyParser.handle(req, res, function *() {})
       })
@@ -53,6 +56,9 @@ describe('BodyParser', function() {
       req.request = req
       req.is = function (types) {
         return types.indexOf(req.headers['content-type']) > -1
+      }
+      req.hasBody = function () {
+        return true
       }
       co(function * () {
         return yield bodyParser.handle(req, res, function *() {})
@@ -81,6 +87,9 @@ describe('BodyParser', function() {
       req.is = function (types) {
         return types[0] === 'multipart/form-data'
       }
+      req.hasBody = function () {
+        return true
+      }
       co(function * () {
         return yield bodyParser.handle(req, res, function *() {})
       })
@@ -103,5 +112,34 @@ describe('BodyParser', function() {
     expect(response.body.package).to.have.property('name')
     expect(response.body.package).to.have.property('path')
     expect(response.body.package).to.have.property('size')
+  })
+
+  it('should not parse body when hasBody returns false', function * () {
+    const bodyParser = new BodyParser()
+    const server = http.createServer(function (req, res) {
+      req.request = req
+      req.is = function (types) {
+        return types[0] === 'multipart/form-data'
+      }
+      req.hasBody = function () {
+        return false
+      }
+      co(function * () {
+        return yield bodyParser.handle(req, res, function *() {})
+      })
+      .then(function () {
+        res.writeHead(200, {"content-type": "application/json"})
+        res.write(JSON.stringify(req.request._body))
+        res.end()
+      })
+      .catch(function (error) {
+        res.writeHead(500, {"Content-Type": "application/json"})
+        res.write(JSON.stringify({error: error.message}))
+        res.end()
+      })
+    })
+
+    const response = yield supertest(server).post('/').send('name', 'doe').expect(200)
+    expect(Object.keys(response.body).length).to.equal(0)
   })
 })
