@@ -35,7 +35,7 @@ describe('BodyParser', function() {
       })
       .then(function () {
         res.writeHead(200, {"content-type": "application/json"})
-        res.write(JSON.stringify(req.request._body))
+        res.write(JSON.stringify(req._body))
         res.end()
       })
       .catch(function (error) {
@@ -65,7 +65,7 @@ describe('BodyParser', function() {
       })
       .then(function () {
         res.writeHead(200, {"content-type": "application/json"})
-        res.write(JSON.stringify(req.request._body))
+        res.write(JSON.stringify(req._body))
         res.end()
       })
       .catch(function (error) {
@@ -95,7 +95,7 @@ describe('BodyParser', function() {
       })
       .then(function () {
         res.writeHead(200, {"content-type": "application/json"})
-        res.write(JSON.stringify(req.request._files))
+        res.write(JSON.stringify(req._files))
         res.end()
       })
       .catch(function (error) {
@@ -129,7 +129,7 @@ describe('BodyParser', function() {
       })
       .then(function () {
         res.writeHead(200, {"content-type": "application/json"})
-        res.write(JSON.stringify(req.request._body))
+        res.write(JSON.stringify(req._body))
         res.end()
       })
       .catch(function (error) {

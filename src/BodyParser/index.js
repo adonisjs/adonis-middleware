@@ -89,7 +89,7 @@ class BodyParser {
     if (request.hasBody()) {
       formFields = yield this._parse(request)
     }
-    request.request._body = formFields.fields
+    request._body = formFields.fields
     request._files = formFields.files
     yield next
   }
