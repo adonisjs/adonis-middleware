@@ -1,6 +1,6 @@
 {
   "name": "adonis-middleware",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "List of official middleware for adonis-framework",
   "main": "index.js",
   "scripts": {
@@ -33,10 +33,10 @@
     "node-uuid": "^1.4.7"
   },
   "peerDependencies": {
-    "adonis-fold": "^2.0.0"
+    "adonis-fold": "^2.0.1"
   },
   "devDependencies": {
-    "adonis-fold": "^2.0.0",
+    "adonis-fold": "^2.0.1",
     "chai": "^3.4.1",
     "co": "^4.6.0",
     "co-mocha": "^1.1.2",
