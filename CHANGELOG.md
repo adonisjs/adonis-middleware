@@ -1,3 +1,20 @@
+<a name="1.0.5"></a>
+## 1.0.5 (2016-01-29)
+
+
+### Bug Fixes
+
+* **bodyParser:** now body parser checks for body length before reading it #1 ([d3fcdf6](https://github.com/adonisjs/adonis-middleware/commit/d3fcdf6))
+
+### Features
+
+* **coveralls:** added coveralls hook ([4c89535](https://github.com/adonisjs/adonis-middleware/commit/4c89535))
+* **package.json:** Added commitizen ([5315bc8](https://github.com/adonisjs/adonis-middleware/commit/5315bc8))
+* **sheild-middleware:** Added shield middleware and completed it's tests ([25628db](https://github.com/adonisjs/adonis-middleware/commit/25628db))
+* **travis:** Added travis.yml ([71c2a48](https://github.com/adonisjs/adonis-middleware/commit/71c2a48))
+
+
+
 <a name="1.0.4"></a>
 ## 1.0.4 (2016-01-29)
 
