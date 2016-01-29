@@ -82,8 +82,14 @@ class BodyParser {
    * @public
    */
   * handle (request, response, next) {
-    const formFields = yield this._parse(request)
-    request.request._body = formFields.fields
+    let formFields = {
+      files: {},
+      fields: {}
+    }
+    if (request.hasBody()) {
+      formFields = yield this._parse(request)
+    }
+    request._body = formFields.fields
     request._files = formFields.files
     yield next
   }
