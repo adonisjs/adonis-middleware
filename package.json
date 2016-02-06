@@ -28,6 +28,7 @@
     "co-better-body": "^1.0.1",
     "csrf": "^3.0.0",
     "formidable": "^1.0.17",
+    "lodash": "^4.2.1",
     "node-csp": "^1.0.1",
     "node-guard": "^1.0.0",
     "node-uuid": "^1.4.7"
