@@ -35,10 +35,10 @@
     "node-uuid": "^1.4.7"
   },
   "peerDependencies": {
-    "adonis-fold": "^2.0.1"
+    "adonis-fold": "^3.0.0"
   },
   "devDependencies": {
-    "adonis-fold": "^2.0.1",
+    "adonis-fold": "^3.0.0",
     "chai": "^3.4.1",
     "co": "^4.6.0",
     "co-mocha": "^1.1.2",
