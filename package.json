@@ -25,7 +25,8 @@
   },
   "homepage": "https://github.com/adonisjs/adonis-middleware#readme",
   "dependencies": {
-    "co-better-body": "^1.0.1",
+    "bytes": "^2.3.0",
+    "co-body": "^4.0.0",
     "csrf": "^3.0.0",
     "formidable": "^1.0.17",
     "lodash": "^4.2.1",
