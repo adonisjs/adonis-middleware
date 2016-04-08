@@ -111,7 +111,7 @@ class BodyParser {
    */
   _setUploadOptions () {
     this.uploadOptions = {
-      maxFieldsSize: bytes.parse(this._get('uploads.maxSize', '4mb')),
+      maxFieldsSize: bytes(this._get('uploads.maxSize', '4mb')),
       hash: this._get('uploads.hash', false),
       multiple: this._get('uploads.multiple', true),
       maxFields: this._get('qs.parameterLimit', 1000)
@@ -133,7 +133,7 @@ class BodyParser {
         if (error) {
           return reject(error)
         }
-        resolve({fields, files})
+        resolve({fields, files, raw: null})
       })
     })
   }
