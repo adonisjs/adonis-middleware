@@ -9,52 +9,10 @@
  * file that was distributed with this source code.
 */
 
-/*
-|--------------------------------------------------------------------------
-| SAMPLE CONFIG
-|--------------------------------------------------------------------------
-|
-| module.exports = {
-|  bodyParser: {
-|    limit: '1mb',
-|    strict: true,
-|    qs: {
-|      depth: 5,
-|      parameterLimit: 1000,
-|      delimiter: '&',
-|      allowDots: false
-|    },
-|    uploads: {
-|      multiple: true,
-|      hash: false,
-|      maxSize: '2mb'
-|    }
-|  }
-| }
-|
-*/
-
 const formidable = use('formidable')
 const coBody = use('co-body')
 const bytes = use('bytes')
-
-/**
- * list of content types to be used for
- * parsing request body
- *
- * @type {Object}
- */
-const contentTypes = {
-  json: [
-    'application/json',
-    'application/json-patch+json',
-    'application/vnd.api+json',
-    'application/csp-report'
-  ],
-  form: ['application/x-www-form-urlencoded'],
-  multipart: ['multipart/form-data'],
-  text: ['text/plain']
-}
+const contentTypes = require('./contentTypes')
 
 class BodyParser {
 
@@ -76,7 +34,7 @@ class BodyParser {
    * @private
    */
   _get (key, defaultValue) {
-    key = `app.bodyParser.${key}`
+    key = `bodyParser.${key}`
     return this.config.get(key, defaultValue)
   }
 
