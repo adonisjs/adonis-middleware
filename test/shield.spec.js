@@ -30,10 +30,17 @@ const defaultConfig = {
 }
 
 const View = {
-  global: function () {}
+  global: function () {},
+  viewsEnv: {
+    filters: {
+      safe: function (input) {
+        return input
+      }
+    }
+  }
 }
 
-describe('Sheild', function () {
+describe('Shield', function () {
 
   before(function * () {
     csrfSecret = yield csrf.secret()
@@ -450,14 +457,15 @@ describe('Sheild', function () {
         return newConfig
       }
     }
-    const View = {
+    const altView = {
       global: function (key, value) {
         if(key === 'csrfToken') {
           viewGlobalValue = value
         }
-      }
+      },
+      viewsEnv: View.viewsEnv
     }
-    const shield = new Shield(Config, View)
+    const shield = new Shield(Config, altView)
     const server = http.createServer(function (req, res) {
       req.request = req
       req.session = {
@@ -517,14 +525,15 @@ describe('Sheild', function () {
         return newConfig
       }
     }
-    const View = {
+    const altView = {
       global: function (key, value) {
         if(key === 'csrfField') {
           viewGlobalValue = value
         }
-      }
+      },
+      viewsEnv: View.viewsEnv
     }
-    const shield = new Shield(Config, View)
+    const shield = new Shield(Config, altView)
     const server = http.createServer(function (req, res) {
       req.request = req
       req.session = {
@@ -854,14 +863,15 @@ describe('Sheild', function () {
         return newConfig
       }
     }
-    const View = {
+    const altView = {
       global: function (key, value) {
         if(key === 'cspMeta') {
           viewGlobalValue = value
         }
-      }
+      },
+      viewsEnv: View.viewsEnv
     }
-    const shield = new Shield(Config, View)
+    const shield = new Shield(Config, altView)
     const server = http.createServer(function (req, res) {
       req.request = req
       req.session = {

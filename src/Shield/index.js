@@ -65,7 +65,7 @@ class Shield {
      * @description view global variable to return csp string
      * as meta tags.
      */
-    this.view.global('cspMeta', metaTags.join('\n'))
+    this.view.global('cspMeta', this.view.viewsEnv.filters.safe(metaTags.join('\n')))
 
     /**
      * @description nonce value to be used under view
@@ -141,7 +141,7 @@ class Shield {
     /**
      * adding a view global to output the html field
      */
-    this.view.global('csrfField', `<input type="hidden" name="_csrf" value="${csrfToken}">`)
+    this.view.global('csrfField', this.view.viewsEnv.filters.safe(`<input type="hidden" name="_csrf" value="${csrfToken}">`))
   }
 
   /**
