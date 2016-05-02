@@ -7,7 +7,7 @@
 */
 
 const Ioc = require('adonis-fold').Ioc
-GLOBAL.use = Ioc.use
+global.use = Ioc.use
 
 const BodyParser = require('../src/BodyParser')
 const http = require('http')

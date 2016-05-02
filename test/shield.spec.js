@@ -6,7 +6,7 @@
  * MIT Licensed
 */
 const Ioc = require('adonis-fold').Ioc
-GLOBAL.use = Ioc.use
+global.use = Ioc.use
 
 const Shield = require('../src/Shield')
 const chai = require('chai')
