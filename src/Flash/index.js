@@ -43,6 +43,12 @@ class Flash {
       return request.old(key, defaultValue)
     })
 
+    /**
+     * attach flashMessages global to the view to get the actual flash
+     * object.
+     */
+    this.view.global('flashMessages', request._flashMessages.getValues)
+
     yield next
   }
 }

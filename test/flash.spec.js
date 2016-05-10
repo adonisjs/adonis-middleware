@@ -67,12 +67,15 @@ describe('Flash', function() {
     const response = yield supertest(server).get('/').expect(200)
     expect(response.body).deep.equal({})
   })
+
   it('should setup view helper to return flash messages', function * () {
     let viewMethod = null
     const server = http.createServer(function (req, res) {
       const View = {
         global: function (name, callback) {
-          viewMethod = callback('name')
+          if (name === 'old') {
+            viewMethod = callback('name')
+          }
         }
       }
       const flash = new Flash(View)
@@ -95,6 +98,38 @@ describe('Flash', function() {
 
     const response = yield supertest(server).get('/').expect(200)
     expect(response.text).to.equal('virk')
+  })
+
+  it('should setup view global to return all flash messages', function * () {
+    let viewMessages = null
+    const server = http.createServer(function (req, res) {
+      const View = {
+        global: function (name, values) {
+          if (name === 'flashMessages') {
+            viewMessages = values
+          }
+        }
+      }
+      const flash = new Flash(View)
+      req.session = {}
+      req.session.pull = function * () {
+        return {name: 'virk'}
+      }
+      co(function * () {
+        return yield flash.handle(req, res, function * () {})
+      })
+      .then(function () {
+        res.writeHead(200, {"content-type": "application/json"})
+        res.end(JSON.stringify(viewMessages))
+      })
+      .catch(function (error) {
+        res.writeHead(500, {"content-type": "application/json"})
+        res.end()
+      })
+    })
+
+    const response = yield supertest(server).get('/').expect(200)
+    expect(response.body).deep.equal({name: 'virk'})
   })
 
   it('should be able to set all input values as flash messages on session', function * () {
