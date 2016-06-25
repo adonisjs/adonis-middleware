@@ -18,6 +18,9 @@ const path = require ('path')
 const expect = chai.expect
 const Config = {
   get: function (key) {
+    if (key === 'bodyParser.uploads.maxSize') {
+      return '4mb'
+    }
     return {}
   }
 }
@@ -44,7 +47,6 @@ describe('BodyParser', function() {
         res.end()
       })
       .catch(function (error) {
-        console.log(error)
         res.writeHead(500, {"Content-Type": "application/json"})
         res.write(JSON.stringify({error: error.message}))
         res.end()
@@ -131,7 +133,6 @@ describe('BodyParser', function() {
         res.end()
       })
       .catch(function (error) {
-        console.log(error)
         res.writeHead(500, {"Content-Type": "application/json"})
         res.write(JSON.stringify({error: error.message}))
         res.end()
@@ -173,5 +174,44 @@ describe('BodyParser', function() {
 
     const response = yield supertest(server).post('/').send('name', 'doe').expect(200)
     expect(Object.keys(response.body).length).to.equal(0)
+  })
+
+  it('should throw errors when upload file size is create than defined size', function * () {
+    const altConfig = {
+      get: function (key) {
+        if (key === 'bodyParser.uploads.maxSize') {
+          return '1kb'
+        }
+        return {}
+      }
+    }
+    const bodyParser = new BodyParser(altConfig)
+    const server = http.createServer(function (req, res) {
+      req.request = req
+      req.is = function (types) {
+        return types[0] === 'multipart/form-data'
+      }
+      req.hasBody = function () {
+        return true
+      }
+      co(function * () {
+        return yield bodyParser.handle(req, res, function *() {})
+      })
+      .then(function () {
+        res.writeHead(200, {"content-type": "application/json"})
+        res.write(JSON.stringify(req._files))
+        res.end()
+      })
+      .catch(function (error) {
+        res.writeHead(error.status, {"Content-Type": "application/json"})
+        res.write(JSON.stringify({error}))
+        res.end()
+      })
+    })
+
+    const response = yield supertest(server).post('/').attach('package', path.join(__dirname, '../package.json')).expect(413)
+    expect(response.body.error).to.exist
+    expect(response.body.error.message).to.equal('Uploaded files size is too large')
+    expect(response.body.error.name).to.equal('RequestEntityTooLarge')
   })
 })

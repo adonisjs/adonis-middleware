@@ -13,6 +13,8 @@ const formidable = use('formidable')
 const coBody = use('co-body')
 const bytes = use('bytes')
 const contentTypes = require('./contentTypes')
+const NE = require('node-exceptions')
+class RequestEntityTooLarge extends NE.LogicalException {}
 
 class BodyParser {
 
@@ -71,7 +73,7 @@ class BodyParser {
     this.uploadOptions = {
       maxFieldsSize: bytes(this._get('uploads.maxSize', '4mb')),
       hash: this._get('uploads.hash', false),
-      multiple: this._get('uploads.multiple', true),
+      multiples: this._get('uploads.multiple', true),
       maxFields: this._get('qs.parameterLimit', 1000)
     }
   }
@@ -80,13 +82,25 @@ class BodyParser {
    * parser multipart form data
    *
    * @param  {Object}   request
+   * @param  {Object} options
    * @return {Oject}
    *
    * @private
    */
-  _multipart (request) {
+  _multipart (request, options) {
     return new Promise(function (resolve, reject) {
-      const form = new formidable.IncomingForm()
+      const form = new formidable.IncomingForm(options)
+      /**
+       * It is a shame that formbidable does not handle max size
+       * on file uploads size :(
+       */
+      form.on('progress', function (received, expected) {
+        if (received > options.maxFieldsSize || expected > options.maxFieldsSize) {
+          form._error(new RequestEntityTooLarge('Uploaded files size is too large', 413))
+          return
+        }
+      })
+
       form.parse(request.request, function (error, fields, files) {
         if (error) {
           return reject(error)
