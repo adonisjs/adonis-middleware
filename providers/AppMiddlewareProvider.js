@@ -5,9 +5,10 @@ const ServiceProvider = require('adonis-fold').ServiceProvider
 class AppMiddlewareProvider extends ServiceProvider {
 
   * register () {
-    this.app.bind('Adonis/Middleware/BodyParser', function () {
+    this.app.bind('Adonis/Middleware/BodyParser', function (app) {
+      const Config = app.use('Adonis/Src/Config')
       const BodyParser = require('../src/BodyParser')
-      return new BodyParser()
+      return new BodyParser(Config)
     })
 
     this.app.bind('Adonis/Middleware/Cors', function (app) {
