@@ -14,10 +14,10 @@ Adonis frameworks ships with a bunch of middleware for commonly required tasks.
 
 ## List
 
-- [Body Parser](http://adonisjs.com/docs/2.0/request)
-- [Cors](http://adonisjs.com/docs/2.0/cors)
-- [Flash](http://adonisjs.com/docs/2.0/request#flash-messages)
-- [Shield](http://adonisjs.com/docs/2.0/shield)
+- [Body Parser](http://adonisjs.com/docs/request)
+- [Cors](http://adonisjs.com/docs/cors)
+- [Flash](http://adonisjs.com/docs/sessions#flash-messages)
+- [Shield](http://adonisjs.com/docs/security)
 
 You can learn more about AdonisJS and all of its awesomeness on http://adonisjs.com :evergreen_tree:
 
