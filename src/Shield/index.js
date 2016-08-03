@@ -10,6 +10,7 @@ const guard = use('node-guard')
 const csp = use('node-csp')
 const uuid = use('node-uuid')
 const Csrf = use('csrf')
+const url = use('url')
 
 class Shield {
 
@@ -162,6 +163,22 @@ class Shield {
       error.status = 403
       error.code = 'EBADCSRFTOKEN'
       throw error
+    }
+
+    /**
+     * if host and origin should be matched then make sure
+     * token is not sent by a 3rd party website
+     */
+    if (this.shieldConfig.csrf.compareHostAndOrigin) {
+      const host = request.hostname()
+      const requestOrigin = request.header('origin') || request.header('referer')
+      const originHost = requestOrigin ? url.parse(requestOrigin).hostname : null
+      if (!originHost || host !== originHost) {
+        const error = new Error('host and origin mis-match')
+        error.status = 403
+        error.code = 'EBADCSRFTOKEN'
+        throw error
+      }
     }
 
     /**
