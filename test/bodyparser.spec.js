@@ -14,7 +14,7 @@ const http = require('http')
 const supertest = require('supertest')
 const chai = require('chai')
 const co = require('co')
-const path = require ('path')
+const path = require('path')
 const expect = chai.expect
 const Config = {
   get: function (key) {
@@ -26,8 +26,7 @@ const Config = {
 }
 require('co-mocha')
 
-describe('BodyParser', function() {
-
+describe('BodyParser', function () {
   it('should parse http request body and attach _body object with request object', function * () {
     const bodyParser = new BodyParser(Config)
     const server = http.createServer(function (req, res) {
@@ -39,18 +38,18 @@ describe('BodyParser', function() {
         return true
       }
       co(function * () {
-        return yield bodyParser.handle(req, res, function *() {})
+        return yield bodyParser.handle(req, res, function * () {})
       })
-      .then(function () {
-        res.writeHead(200, {"content-type": "application/json"})
-        res.write(JSON.stringify(req._body))
-        res.end()
-      })
-      .catch(function (error) {
-        res.writeHead(500, {"Content-Type": "application/json"})
-        res.write(JSON.stringify({error: error.message}))
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'content-type': 'application/json'})
+          res.write(JSON.stringify(req._body))
+          res.end()
+        })
+        .catch(function (error) {
+          res.writeHead(500, {'Content-Type': 'application/json'})
+          res.write(JSON.stringify({error: error.message}))
+          res.end()
+        })
     })
 
     const response = yield supertest(server).post('/').send({name: 'virk', age: 22}).type('form').expect(200)
@@ -68,18 +67,18 @@ describe('BodyParser', function() {
         return true
       }
       co(function * () {
-        return yield bodyParser.handle(req, res, function *() {})
+        return yield bodyParser.handle(req, res, function * () {})
       })
-      .then(function () {
-        res.writeHead(200, {"content-type": "application/json"})
-        res.write(JSON.stringify(req._body))
-        res.end()
-      })
-      .catch(function (error) {
-        res.writeHead(500, {"Content-Type": "application/json"})
-        res.write(JSON.stringify({error: error.message}))
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'content-type': 'application/json'})
+          res.write(JSON.stringify(req._body))
+          res.end()
+        })
+        .catch(function (error) {
+          res.writeHead(500, {'Content-Type': 'application/json'})
+          res.write(JSON.stringify({error: error.message}))
+          res.end()
+        })
     })
 
     const response = yield supertest(server).post('/').set('Accept', 'application/json').send({name: 'virk'}).expect(200)
@@ -97,18 +96,18 @@ describe('BodyParser', function() {
         return true
       }
       co(function * () {
-        return yield bodyParser.handle(req, res, function *() {})
+        return yield bodyParser.handle(req, res, function * () {})
       })
-      .then(function () {
-        res.writeHead(200)
-        res.write(req._raw)
-        res.end()
-      })
-      .catch(function (error) {
-        res.writeHead(500, {"Content-Type": "application/json"})
-        res.write(JSON.stringify({error: error.message}))
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200)
+          res.write(req._raw)
+          res.end()
+        })
+        .catch(function (error) {
+          res.writeHead(500, {'Content-Type': 'application/json'})
+          res.write(JSON.stringify({error: error.message}))
+          res.end()
+        })
     })
     const response = yield supertest(server).post('/').set('Content-Type', 'text/plain').send('Hello world!').expect(200)
     expect(response.text).to.equal('Hello world!')
@@ -125,18 +124,18 @@ describe('BodyParser', function() {
         return true
       }
       co(function * () {
-        return yield bodyParser.handle(req, res, function *() {})
+        return yield bodyParser.handle(req, res, function * () {})
       })
-      .then(function () {
-        res.writeHead(200, {"content-type": "application/json"})
-        res.write(JSON.stringify(req._files))
-        res.end()
-      })
-      .catch(function (error) {
-        res.writeHead(500, {"Content-Type": "application/json"})
-        res.write(JSON.stringify({error: error.message}))
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'content-type': 'application/json'})
+          res.write(JSON.stringify(req._files))
+          res.end()
+        })
+        .catch(function (error) {
+          res.writeHead(500, {'Content-Type': 'application/json'})
+          res.write(JSON.stringify({error: error.message}))
+          res.end()
+        })
     })
 
     const response = yield supertest(server).post('/').attach('package', path.join(__dirname, '../package.json')).expect(200)
@@ -158,18 +157,18 @@ describe('BodyParser', function() {
         return false
       }
       co(function * () {
-        return yield bodyParser.handle(req, res, function *() {})
+        return yield bodyParser.handle(req, res, function * () {})
       })
-      .then(function () {
-        res.writeHead(200, {"content-type": "application/json"})
-        res.write(JSON.stringify(req._body))
-        res.end()
-      })
-      .catch(function (error) {
-        res.writeHead(500, {"Content-Type": "application/json"})
-        res.write(JSON.stringify({error: error.message}))
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'content-type': 'application/json'})
+          res.write(JSON.stringify(req._body))
+          res.end()
+        })
+        .catch(function (error) {
+          res.writeHead(500, {'Content-Type': 'application/json'})
+          res.write(JSON.stringify({error: error.message}))
+          res.end()
+        })
     })
 
     const response = yield supertest(server).post('/').send('name', 'doe').expect(200)
@@ -195,18 +194,18 @@ describe('BodyParser', function() {
         return true
       }
       co(function * () {
-        return yield bodyParser.handle(req, res, function *() {})
+        return yield bodyParser.handle(req, res, function * () {})
       })
-      .then(function () {
-        res.writeHead(200, {"content-type": "application/json"})
-        res.write(JSON.stringify(req._files))
-        res.end()
-      })
-      .catch(function (error) {
-        res.writeHead(error.status, {"Content-Type": "application/json"})
-        res.write(JSON.stringify({error}))
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'content-type': 'application/json'})
+          res.write(JSON.stringify(req._files))
+          res.end()
+        })
+        .catch(function (error) {
+          res.writeHead(error.status, {'Content-Type': 'application/json'})
+          res.write(JSON.stringify({error}))
+          res.end()
+        })
     })
 
     const response = yield supertest(server).post('/').attach('package', path.join(__dirname, '../package.json')).expect(413)
