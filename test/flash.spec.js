@@ -14,11 +14,10 @@ const chai = require('chai')
 const expect = chai.expect
 require('co-mocha')
 const View = {
-  global: function (){}
+  global: function () {}
 }
 
-
-describe('Flash', function() {
+describe('Flash', function () {
   it('should pull messages from session and set them on to request object', function * () {
     const server = http.createServer(function (req, res) {
       const flash = new Flash(View)
@@ -29,15 +28,15 @@ describe('Flash', function() {
       co(function * () {
         return yield flash.handle(req, res, function * () {})
       })
-      .then(function () {
-        res.writeHead(200, {"content-type": "application/json"})
-        res.write(JSON.stringify(req._flashMessages.getValues))
-        res.end()
-      })
-      .catch(function (error) {
-        res.writeHead(500, {"content-type": "application/json"})
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'content-type': 'application/json'})
+          res.write(JSON.stringify(req._flashMessages.getValues))
+          res.end()
+        })
+        .catch(function () {
+          res.writeHead(500, {'content-type': 'application/json'})
+          res.end()
+        })
     })
 
     const response = yield supertest(server).get('/').expect(200)
@@ -48,20 +47,19 @@ describe('Flash', function() {
     const server = http.createServer(function (req, res) {
       const flash = new Flash(View)
       req.session = {}
-      req.session.pull = function * () {
-      }
+      req.session.pull = function * () {}
       co(function * () {
         return yield flash.handle(req, res, function * () {})
       })
-      .then(function () {
-        res.writeHead(200, {"content-type": "application/json"})
-        res.write(JSON.stringify(req._flashMessages.getValues))
-        res.end()
-      })
-      .catch(function (error) {
-        res.writeHead(500, {"content-type": "application/json"})
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'content-type': 'application/json'})
+          res.write(JSON.stringify(req._flashMessages.getValues))
+          res.end()
+        })
+        .catch(function () {
+          res.writeHead(500, {'content-type': 'application/json'})
+          res.end()
+        })
     })
 
     const response = yield supertest(server).get('/').expect(200)
@@ -86,14 +84,14 @@ describe('Flash', function() {
       co(function * () {
         return yield flash.handle(req, res, function * () {})
       })
-      .then(function () {
-        res.writeHead(200, {"content-type": "text/plain"})
-        res.end(viewMethod)
-      })
-      .catch(function (error) {
-        res.writeHead(500, {"content-type": "application/json"})
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'content-type': 'text/plain'})
+          res.end(viewMethod)
+        })
+        .catch(function () {
+          res.writeHead(500, {'content-type': 'application/json'})
+          res.end()
+        })
     })
 
     const response = yield supertest(server).get('/').expect(200)
@@ -118,14 +116,14 @@ describe('Flash', function() {
       co(function * () {
         return yield flash.handle(req, res, function * () {})
       })
-      .then(function () {
-        res.writeHead(200, {"content-type": "application/json"})
-        res.end(JSON.stringify(viewMessages))
-      })
-      .catch(function (error) {
-        res.writeHead(500, {"content-type": "application/json"})
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'content-type': 'application/json'})
+          res.end(JSON.stringify(viewMessages))
+        })
+        .catch(function () {
+          res.writeHead(500, {'content-type': 'application/json'})
+          res.end()
+        })
     })
 
     const response = yield supertest(server).get('/').expect(200)
@@ -152,14 +150,14 @@ describe('Flash', function() {
         yield flash.handle(req, res, function * () {})
         yield req.withAll().flash()
       })
-      .then(function () {
-        res.writeHead(200, {"content-type": "application/json"})
-        res.end(JSON.stringify(sessionValues))
-      })
-      .catch(function (error) {
-        res.writeHead(500, {"content-type": "application/json"})
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'content-type': 'application/json'})
+          res.end(JSON.stringify(sessionValues))
+        })
+        .catch(function () {
+          res.writeHead(500, {'content-type': 'application/json'})
+          res.end()
+        })
     })
     const response = yield supertest(server).get('/').expect(200)
     expect(response.body).to.have.property('key')
@@ -193,14 +191,14 @@ describe('Flash', function() {
         yield flash.handle(req, res, function * () {})
         yield req.withOnly('age', 'name').flash()
       })
-      .then(function () {
-        res.writeHead(200, {"content-type": "application/json"})
-        res.end(JSON.stringify(sessionValues))
-      })
-      .catch(function (error) {
-        res.writeHead(500, {"content-type": "application/json"})
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'content-type': 'application/json'})
+          res.end(JSON.stringify(sessionValues))
+        })
+        .catch(function () {
+          res.writeHead(500, {'content-type': 'application/json'})
+          res.end()
+        })
     })
     const response = yield supertest(server).get('/').expect(200)
     expect(response.body).to.have.property('key')
@@ -236,14 +234,14 @@ describe('Flash', function() {
         yield flash.handle(req, res, function * () {})
         yield req.without('age').flash()
       })
-      .then(function () {
-        res.writeHead(200, {"content-type": "application/json"})
-        res.end(JSON.stringify(sessionValues))
-      })
-      .catch(function (error) {
-        res.writeHead(500, {"content-type": "application/json"})
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'content-type': 'application/json'})
+          res.end(JSON.stringify(sessionValues))
+        })
+        .catch(function () {
+          res.writeHead(500, {'content-type': 'application/json'})
+          res.end()
+        })
     })
     const response = yield supertest(server).get('/').expect(200)
     expect(response.body).to.have.property('key')
@@ -268,15 +266,14 @@ describe('Flash', function() {
         yield flash.handle(req, res, function * () {})
         yield req.with({name: 'foo'}).flash()
       })
-      .then(function () {
-        res.writeHead(200, {"content-type": "application/json"})
-        res.end(JSON.stringify(sessionValues))
-      })
-      .catch(function (error) {
-        console.log(error.stack)
-        res.writeHead(500, {"content-type": "application/json"})
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'content-type': 'application/json'})
+          res.end(JSON.stringify(sessionValues))
+        })
+        .catch(function () {
+          res.writeHead(500, {'content-type': 'application/json'})
+          res.end()
+        })
     })
     const response = yield supertest(server).get('/').expect(200)
     expect(response.body).to.have.property('key')
@@ -312,15 +309,14 @@ describe('Flash', function() {
         yield flash.handle(req, res, function * () {})
         yield req.without('age').andWith({gender: 'male'}).flash()
       })
-      .then(function () {
-        res.writeHead(200, {"content-type": "application/json"})
-        res.end(JSON.stringify(sessionValues))
-      })
-      .catch(function (error) {
-        console.log(error)
-        res.writeHead(500, {"content-type": "application/json"})
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'content-type': 'application/json'})
+          res.end(JSON.stringify(sessionValues))
+        })
+        .catch(function () {
+          res.writeHead(500, {'content-type': 'application/json'})
+          res.end()
+        })
     })
     const response = yield supertest(server).get('/').expect(200)
     expect(response.body).to.have.property('key')
@@ -354,15 +350,14 @@ describe('Flash', function() {
         yield flash.handle(req, res, function * () {})
         yield req.withOnly('name').andWith({gender: 'male'}).flash()
       })
-      .then(function () {
-        res.writeHead(200, {"content-type": "application/json"})
-        res.end(JSON.stringify(sessionValues))
-      })
-      .catch(function (error) {
-        console.log(error)
-        res.writeHead(500, {"content-type": "application/json"})
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'content-type': 'application/json'})
+          res.end(JSON.stringify(sessionValues))
+        })
+        .catch(function () {
+          res.writeHead(500, {'content-type': 'application/json'})
+          res.end()
+        })
     })
     const response = yield supertest(server).get('/').expect(200)
     expect(response.body).to.have.property('key')
@@ -391,15 +386,14 @@ describe('Flash', function() {
         yield flash.handle(req, res, function * () {})
         yield req.withAll().andWith({age: 22}).flash()
       })
-      .then(function () {
-        res.writeHead(200, {"content-type": "application/json"})
-        res.end(JSON.stringify(sessionValues))
-      })
-      .catch(function (error) {
-        console.log(error)
-        res.writeHead(500, {"content-type": "application/json"})
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'content-type': 'application/json'})
+          res.end(JSON.stringify(sessionValues))
+        })
+        .catch(function () {
+          res.writeHead(500, {'content-type': 'application/json'})
+          res.end()
+        })
     })
     const response = yield supertest(server).get('/').expect(200)
     expect(response.body).to.have.property('key')
@@ -428,15 +422,14 @@ describe('Flash', function() {
         yield flash.handle(req, res, function * () {})
         yield req.with({name: 'doe'}).andWith({age: 22}).andWith({gender: 'male'}).flash()
       })
-      .then(function () {
-        res.writeHead(200, {"content-type": "application/json"})
-        res.end(JSON.stringify(sessionValues))
-      })
-      .catch(function (error) {
-        console.log(error)
-        res.writeHead(500, {"content-type": "application/json"})
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'content-type': 'application/json'})
+          res.end(JSON.stringify(sessionValues))
+        })
+        .catch(function () {
+          res.writeHead(500, {'content-type': 'application/json'})
+          res.end()
+        })
     })
     const response = yield supertest(server).get('/').expect(200)
     expect(response.body).to.have.property('key')

@@ -14,9 +14,8 @@ const supertest = require('supertest')
 const expect = chai.expect
 require('co-mocha')
 
-describe('Cors', function() {
+describe('Cors', function () {
   it('should disable cors when cors origin is set to false', function * () {
-
     const Config = {
       get: function (key) {
         key = key.split('.')[1]
@@ -47,19 +46,18 @@ describe('Cors', function() {
         res.writeHead(code)
         return res
       }
-      res.send = function (code) {
-      }
+      res.send = function (code) {}
       co(function * () {
-        return yield cors.handle(req, res, function * (){})
+        return yield cors.handle(req, res, function * () {})
       })
-      .then(function () {
-        res.end()
-      })
-      .catch(function (error) {
-        console.log(error)
-        res.writeHead(500)
-        res.end()
-      })
+        .then(function () {
+          res.end()
+        })
+        .catch(function (error) {
+          console.log(error)
+          res.writeHead(500)
+          res.end()
+        })
     })
 
     const response = yield supertest(server).options('/').expect(204)
@@ -67,7 +65,6 @@ describe('Cors', function() {
   })
 
   it('should return request origin as allowed origin when cors origin is set to true', function * () {
-
     const Config = {
       get: function (key) {
         key = key.split('.')[1]
@@ -98,19 +95,18 @@ describe('Cors', function() {
         res.writeHead(code)
         return res
       }
-      res.send = function (code) {
-      }
+      res.send = function (code) {}
       co(function * () {
-        return yield cors.handle(req, res, function * (){})
+        return yield cors.handle(req, res, function * () {})
       })
-      .then(function () {
-        res.end()
-      })
-      .catch(function (error) {
-        console.log(error)
-        res.writeHead(500)
-        res.end()
-      })
+        .then(function () {
+          res.end()
+        })
+        .catch(function (error) {
+          console.log(error)
+          res.writeHead(500)
+          res.end()
+        })
     })
 
     const response = yield supertest(server).options('/').set('origin', 'localhost').expect(204)
@@ -118,7 +114,6 @@ describe('Cors', function() {
   })
 
   it('should return call cors origin method when defined', function * () {
-
     const Config = {
       get: function (key) {
         key = key.split('.')[1]
@@ -151,19 +146,18 @@ describe('Cors', function() {
         res.writeHead(code)
         return res
       }
-      res.send = function (code) {
-      }
+      res.send = function (code) {}
       co(function * () {
-        return yield cors.handle(req, res, function * (){})
+        return yield cors.handle(req, res, function * () {})
       })
-      .then(function () {
-        res.end()
-      })
-      .catch(function (error) {
-        console.log(error)
-        res.writeHead(500)
-        res.end()
-      })
+        .then(function () {
+          res.end()
+        })
+        .catch(function (error) {
+          console.log(error)
+          res.writeHead(500)
+          res.end()
+        })
     })
 
     const response = yield supertest(server).options('/').set('origin', 'localhost').expect(204)
@@ -171,7 +165,6 @@ describe('Cors', function() {
   })
 
   it('should define methods allowed in cors methods', function * () {
-
     const Config = {
       get: function (key) {
         key = key.split('.')[1]
@@ -204,19 +197,18 @@ describe('Cors', function() {
         res.writeHead(code)
         return res
       }
-      res.send = function (code) {
-      }
+      res.send = function (code) {}
       co(function * () {
-        return yield cors.handle(req, res, function * (){})
+        return yield cors.handle(req, res, function * () {})
       })
-      .then(function () {
-        res.end()
-      })
-      .catch(function (error) {
-        console.log(error)
-        res.writeHead(500)
-        res.end()
-      })
+        .then(function () {
+          res.end()
+        })
+        .catch(function (error) {
+          console.log(error)
+          res.writeHead(500)
+          res.end()
+        })
     })
 
     const response = yield supertest(server).options('/').set('origin', 'localhost').expect(204)
@@ -224,7 +216,6 @@ describe('Cors', function() {
   })
 
   it('should return request headers defined in Access-Control-Request-Headers back when cors headers are set to true', function * () {
-
     const Config = {
       get: function (key) {
         key = key.split('.')[1]
@@ -245,7 +236,7 @@ describe('Cors', function() {
     const cors = new Cors(Config)
     const server = http.createServer(function (req, res) {
       req.header = function (key) {
-        key = key.replace(/(?:^|-)\S/g, function(a) {
+        key = key.replace(/(?:^|-)\S/g, function (a) {
           return a.toLowerCase()
         })
         return req.headers[key]
@@ -260,19 +251,18 @@ describe('Cors', function() {
         res.writeHead(code)
         return res
       }
-      res.send = function (code) {
-      }
+      res.send = function (code) {}
       co(function * () {
-        return yield cors.handle(req, res, function * (){})
+        return yield cors.handle(req, res, function * () {})
       })
-      .then(function () {
-        res.end()
-      })
-      .catch(function (error) {
-        console.log(error)
-        res.writeHead(500)
-        res.end()
-      })
+        .then(function () {
+          res.end()
+        })
+        .catch(function (error) {
+          console.log(error)
+          res.writeHead(500)
+          res.end()
+        })
     })
 
     const response = yield supertest(server).options('/').set('Access-Control-Request-Headers', 'Accept').set('origin', 'localhost').expect(204)
@@ -280,7 +270,6 @@ describe('Cors', function() {
   })
 
   it('should return request headers defined in Access-Control-Request-Headers back when cors headers is a function returning true', function * () {
-
     const Config = {
       get: function (key) {
         key = key.split('.')[1]
@@ -303,7 +292,7 @@ describe('Cors', function() {
     const cors = new Cors(Config)
     const server = http.createServer(function (req, res) {
       req.header = function (key) {
-        key = key.replace(/(?:^|-)\S/g, function(a) {
+        key = key.replace(/(?:^|-)\S/g, function (a) {
           return a.toLowerCase()
         })
         return req.headers[key]
@@ -318,19 +307,18 @@ describe('Cors', function() {
         res.writeHead(code)
         return res
       }
-      res.send = function (code) {
-      }
+      res.send = function (code) {}
       co(function * () {
-        return yield cors.handle(req, res, function * (){})
+        return yield cors.handle(req, res, function * () {})
       })
-      .then(function () {
-        res.end()
-      })
-      .catch(function (error) {
-        console.log(error)
-        res.writeHead(500)
-        res.end()
-      })
+        .then(function () {
+          res.end()
+        })
+        .catch(function (error) {
+          console.log(error)
+          res.writeHead(500)
+          res.end()
+        })
     })
 
     const response = yield supertest(server).options('/').set('Access-Control-Request-Headers', 'Accept').set('origin', 'localhost').expect(204)
@@ -338,7 +326,6 @@ describe('Cors', function() {
   })
 
   it('should not set access-control-allow-headers when cors headers is set to false', function * () {
-
     const Config = {
       get: function (key) {
         key = key.split('.')[1]
@@ -359,7 +346,7 @@ describe('Cors', function() {
     const cors = new Cors(Config)
     const server = http.createServer(function (req, res) {
       req.header = function (key) {
-        key = key.replace(/(?:^|-)\S/g, function(a) {
+        key = key.replace(/(?:^|-)\S/g, function (a) {
           return a.toLowerCase()
         })
         return req.headers[key]
@@ -374,19 +361,18 @@ describe('Cors', function() {
         res.writeHead(code)
         return res
       }
-      res.send = function (code) {
-      }
+      res.send = function (code) {}
       co(function * () {
-        return yield cors.handle(req, res, function * (){})
+        return yield cors.handle(req, res, function * () {})
       })
-      .then(function () {
-        res.end()
-      })
-      .catch(function (error) {
-        console.log(error)
-        res.writeHead(500)
-        res.end()
-      })
+        .then(function () {
+          res.end()
+        })
+        .catch(function (error) {
+          console.log(error)
+          res.writeHead(500)
+          res.end()
+        })
     })
 
     const response = yield supertest(server).options('/').set('Access-Control-Request-Headers', 'Accept').set('origin', 'localhost').expect(204)
@@ -394,7 +380,6 @@ describe('Cors', function() {
   })
 
   it('should set Access-Control-Expose-Headers when expose header are defined', function * () {
-
     const Config = {
       get: function (key) {
         key = key.split('.')[1]
@@ -415,7 +400,7 @@ describe('Cors', function() {
     const cors = new Cors(Config)
     const server = http.createServer(function (req, res) {
       req.header = function (key) {
-        key = key.replace(/(?:^|-)\S/g, function(a) {
+        key = key.replace(/(?:^|-)\S/g, function (a) {
           return a.toLowerCase()
         })
         return req.headers[key]
@@ -430,19 +415,18 @@ describe('Cors', function() {
         res.writeHead(code)
         return res
       }
-      res.send = function (code) {
-      }
+      res.send = function (code) {}
       co(function * () {
-        return yield cors.handle(req, res, function * (){})
+        return yield cors.handle(req, res, function * () {})
       })
-      .then(function () {
-        res.end()
-      })
-      .catch(function (error) {
-        console.log(error)
-        res.writeHead(500)
-        res.end()
-      })
+        .then(function () {
+          res.end()
+        })
+        .catch(function (error) {
+          console.log(error)
+          res.writeHead(500)
+          res.end()
+        })
     })
 
     const response = yield supertest(server).options('/').set('origin', 'localhost').expect(204)
@@ -450,7 +434,6 @@ describe('Cors', function() {
   })
 
   it('should not interpret when request method is not options', function * () {
-
     const Config = {
       get: function (key) {
         key = key.split('.')[1]
@@ -471,7 +454,7 @@ describe('Cors', function() {
     const cors = new Cors(Config)
     const server = http.createServer(function (req, res) {
       req.header = function (key) {
-        key = key.replace(/(?:^|-)\S/g, function(a) {
+        key = key.replace(/(?:^|-)\S/g, function (a) {
           return a.toLowerCase()
         })
         return req.headers[key]
@@ -486,22 +469,20 @@ describe('Cors', function() {
         res.writeHead(code)
         return res
       }
-      res.send = function (code) {
-      }
+      res.send = function (code) {}
       co(function * () {
-        return yield cors.handle(req, res, function * (){})
+        return yield cors.handle(req, res, function * () {})
       })
-      .then(function () {
-        res.writeHead(200)
-        res.end()
-      })
-      .catch(function (error) {
-        console.log(error)
-        res.writeHead(500)
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200)
+          res.end()
+        })
+        .catch(function (error) {
+          console.log(error)
+          res.writeHead(500)
+          res.end()
+        })
     })
-
-    const response = yield supertest(server).get('/').set('origin', 'localhost').expect(200)
+    yield supertest(server).get('/').set('origin', 'localhost').expect(200)
   })
 })

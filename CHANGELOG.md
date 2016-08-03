@@ -1,3 +1,7 @@
+### Features
+
+* **shield:csrf:** add support for host and origin match ([8cf1ac5](https://github.com/adonisjs/adonis-middleware/commit/8cf1ac5))
+
 <a name="1.0.6"></a>
 ## 1.0.6 (2016-06-26)
 

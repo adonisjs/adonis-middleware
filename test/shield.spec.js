@@ -13,7 +13,7 @@ const chai = require('chai')
 const expect = chai.expect
 const http = require('http')
 const co = require('co')
-const csrf = new(require('csrf'))
+const csrf = new (require('csrf'))
 const supertest = require('supertest')
 let csrfSecret = null
 require('co-mocha')
@@ -41,7 +41,6 @@ const View = {
 }
 
 describe('Shield', function () {
-
   before(function * () {
     csrfSecret = yield csrf.secret()
   })
@@ -68,14 +67,14 @@ describe('Shield', function () {
       co(function * () {
         return yield shield.handle(req, response, function * () {})
       })
-      .then(function () {
-        res.writeHead(200, {"Content-type": "application/json"})
-        res.end()
-      })
-      .catch(function (error) {
-        res.writeHead(500, {"Content-type": "application/json"})
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'Content-type': 'application/json'})
+          res.end()
+        })
+        .catch(function () {
+          res.writeHead(500, {'Content-type': 'application/json'})
+          res.end()
+        })
     })
     const response = yield supertest(server).get('/').expect(200)
     expect(response.headers).not.have.property(shield.sessionKey)
@@ -115,17 +114,17 @@ describe('Shield', function () {
       co(function * () {
         return yield shield.handle(req, response, function * () {})
       })
-      .then(function () {
-        res.writeHead(200, {"Content-type": "application/json"})
-        res.end()
-      })
-      .catch(function (error) {
-        console.log(error)
-        res.writeHead(500, {"Content-type": "application/json"})
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'Content-type': 'application/json'})
+          res.end()
+        })
+        .catch(function (error) {
+          console.log(error)
+          res.writeHead(500, {'Content-type': 'application/json'})
+          res.end()
+        })
     })
-    const response = yield supertest(server).get('/').expect(200)
+    yield supertest(server).get('/').expect(200)
     expect(secretAddedOnSession).to.have.property(shield.sessionKey)
     expect(secretAddedOnSession[shield.sessionKey]).to.be.a('string')
   })
@@ -161,15 +160,15 @@ describe('Shield', function () {
       co(function * () {
         return yield shield.handle(req, response, function * () {})
       })
-      .then(function () {
-        res.writeHead(200, {"Content-type": "application/json"})
-        res.end()
-      })
-      .catch(function (error) {
-        res.writeHead(error.status, {"Content-type": "application/json"})
-        res.write(JSON.stringify({body:error.message}))
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'Content-type': 'application/json'})
+          res.end()
+        })
+        .catch(function (error) {
+          res.writeHead(error.status, {'Content-type': 'application/json'})
+          res.write(JSON.stringify({body: error.message}))
+          res.end()
+        })
     })
     const response = yield supertest(server).get('/').expect(403)
     expect(response.body.body).to.match(/csrf secret missing/)
@@ -214,15 +213,15 @@ describe('Shield', function () {
       co(function * () {
         return yield shield.handle(req, response, function * () {})
       })
-      .then(function () {
-        res.writeHead(200, {"Content-type": "application/json"})
-        res.end()
-      })
-      .catch(function (error) {
-        res.writeHead(error.status, {"Content-type": "application/json"})
-        res.write(JSON.stringify({body:error.message}))
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'Content-type': 'application/json'})
+          res.end()
+        })
+        .catch(function (error) {
+          res.writeHead(error.status, {'Content-type': 'application/json'})
+          res.write(JSON.stringify({body: error.message}))
+          res.end()
+        })
     })
     const response = yield supertest(server).get('/').expect(403)
     expect(response.body.body).to.match(/csrf token mismatch/)
@@ -267,16 +266,16 @@ describe('Shield', function () {
       co(function * () {
         return yield shield.handle(req, response, function * () {})
       })
-      .then(function () {
-        res.writeHead(200, {"Content-type": "application/json"})
-        res.end()
-      })
-      .catch(function (error) {
-        console.log(error)
-        res.writeHead(error.status, {"Content-type": "application/json"})
-        res.write(JSON.stringify({body:error.message}))
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'Content-type': 'application/json'})
+          res.end()
+        })
+        .catch(function (error) {
+          console.log(error)
+          res.writeHead(error.status, {'Content-type': 'application/json'})
+          res.write(JSON.stringify({body: error.message}))
+          res.end()
+        })
     })
     yield supertest(server).get('/').expect(200)
   })
@@ -320,15 +319,15 @@ describe('Shield', function () {
       co(function * () {
         return yield shield.handle(req, response, function * () {})
       })
-      .then(function () {
-        res.writeHead(200, {"Content-type": "application/json"})
-        res.end()
-      })
-      .catch(function (error) {
-        res.writeHead(error.status, {"Content-type": "application/json"})
-        res.write(JSON.stringify({body:error.message}))
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'Content-type': 'application/json'})
+          res.end()
+        })
+        .catch(function (error) {
+          res.writeHead(error.status, {'Content-type': 'application/json'})
+          res.write(JSON.stringify({body: error.message}))
+          res.end()
+        })
     })
     const response = yield supertest(server).get('/').expect(403)
     expect(response.body.body).to.match(/csrf token mismatch/)
@@ -374,16 +373,16 @@ describe('Shield', function () {
       co(function * () {
         return yield shield.handle(req, response, function * () {})
       })
-      .then(function () {
-        res.writeHead(200, {"Content-type": "application/json"})
-        res.end()
-      })
-      .catch(function (error) {
-        console.log(error)
-        res.writeHead(error.status, {"Content-type": "application/json"})
-        res.write(JSON.stringify({body:error.message}))
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'Content-type': 'application/json'})
+          res.end()
+        })
+        .catch(function (error) {
+          console.log(error)
+          res.writeHead(error.status, {'Content-type': 'application/json'})
+          res.write(JSON.stringify({body: error.message}))
+          res.end()
+        })
     })
     yield supertest(server).get('/').expect(200)
   })
@@ -430,16 +429,16 @@ describe('Shield', function () {
       co(function * () {
         return yield shield.handle(req, response, function * () {})
       })
-      .then(function () {
-        res.writeHead(200, {"Content-type": "application/json"})
-        res.write(JSON.stringify({token: req.csrfToken()}))
-        res.end()
-      })
-      .catch(function (error) {
-        res.writeHead(error.status, {"Content-type": "application/json"})
-        res.write(JSON.stringify({body:error.message}))
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'Content-type': 'application/json'})
+          res.write(JSON.stringify({token: req.csrfToken()}))
+          res.end()
+        })
+        .catch(function (error) {
+          res.writeHead(error.status, {'Content-type': 'application/json'})
+          res.write(JSON.stringify({body: error.message}))
+          res.end()
+        })
     })
     const response = yield supertest(server).get('/').expect(200)
     expect(response.body.token).not.equal(null)
@@ -459,7 +458,7 @@ describe('Shield', function () {
     }
     const altView = {
       global: function (key, value) {
-        if(key === 'csrfToken') {
+        if (key === 'csrfToken') {
           viewGlobalValue = value
         }
       },
@@ -498,18 +497,18 @@ describe('Shield', function () {
       co(function * () {
         return yield shield.handle(req, response, function * () {})
       })
-      .then(function () {
-        res.writeHead(200, {"Content-type": "application/json"})
-        res.write(JSON.stringify({token: req.csrfToken()}))
-        res.end()
-      })
-      .catch(function (error) {
-        res.writeHead(error.status, {"Content-type": "application/json"})
-        res.write(JSON.stringify({body:error.message}))
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'Content-type': 'application/json'})
+          res.write(JSON.stringify({token: req.csrfToken()}))
+          res.end()
+        })
+        .catch(function (error) {
+          res.writeHead(error.status, {'Content-type': 'application/json'})
+          res.write(JSON.stringify({body: error.message}))
+          res.end()
+        })
     })
-    const response = yield supertest(server).get('/').expect(200)
+    yield supertest(server).get('/').expect(200)
     expect(viewGlobalValue).not.equal(null)
     expect(viewGlobalValue).not.equal(undefined)
     expect(viewGlobalValue).to.equal(cookieValue)
@@ -527,7 +526,7 @@ describe('Shield', function () {
     }
     const altView = {
       global: function (key, value) {
-        if(key === 'csrfField') {
+        if (key === 'csrfField') {
           viewGlobalValue = value
         }
       },
@@ -566,18 +565,18 @@ describe('Shield', function () {
       co(function * () {
         return yield shield.handle(req, response, function * () {})
       })
-      .then(function () {
-        res.writeHead(200, {"Content-type": "application/json"})
-        res.write(JSON.stringify({token: req.csrfToken()}))
-        res.end()
-      })
-      .catch(function (error) {
-        res.writeHead(error.status, {"Content-type": "application/json"})
-        res.write(JSON.stringify({body:error.message}))
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'Content-type': 'application/json'})
+          res.write(JSON.stringify({token: req.csrfToken()}))
+          res.end()
+        })
+        .catch(function (error) {
+          res.writeHead(error.status, {'Content-type': 'application/json'})
+          res.write(JSON.stringify({body: error.message}))
+          res.end()
+        })
     })
-    const response = yield supertest(server).get('/').expect(200)
+    yield supertest(server).get('/').expect(200)
     expect(viewGlobalValue).not.equal(null)
     expect(viewGlobalValue).not.equal(undefined)
     expect(viewGlobalValue).to.equal(`<input type="hidden" name="_csrf" value="${cookieValue}">`)
@@ -617,24 +616,23 @@ describe('Shield', function () {
       response.header = function (key, value) {
         res.setHeader(key, value)
       }
-      response.cookie = function (key, value) {
-      }
+      response.cookie = function (key, value) {}
 
       co(function * () {
         return yield shield.handle(req, response, function * () {})
       })
-      .then(function () {
-        res.writeHead(200, {"Content-type": "application/json"})
-        res.end()
-      })
-      .catch(function (error) {
-        console.log(error)
-        res.writeHead(error.status, {"Content-type": "application/json"})
-        res.write(JSON.stringify({body:error.message}))
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'Content-type': 'application/json'})
+          res.end()
+        })
+        .catch(function (error) {
+          console.log(error)
+          res.writeHead(error.status, {'Content-type': 'application/json'})
+          res.write(JSON.stringify({body: error.message}))
+          res.end()
+        })
     })
-    const response = yield supertest(server).get('/?_csrf='+csrf.create(csrfSecret)).expect(200)
+    yield supertest(server).get('/?_csrf=' + csrf.create(csrfSecret)).expect(200)
   })
 
   it('should pass the request when csrf-token header is present', function * () {
@@ -670,24 +668,23 @@ describe('Shield', function () {
       response.header = function (key, value) {
         res.setHeader(key, value)
       }
-      response.cookie = function (key, value) {
-      }
+      response.cookie = function (key, value) {}
 
       co(function * () {
         return yield shield.handle(req, response, function * () {})
       })
-      .then(function () {
-        res.writeHead(200, {"Content-type": "application/json"})
-        res.end()
-      })
-      .catch(function (error) {
-        console.log(error)
-        res.writeHead(error.status, {"Content-type": "application/json"})
-        res.write(JSON.stringify({body:error.message}))
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'Content-type': 'application/json'})
+          res.end()
+        })
+        .catch(function (error) {
+          console.log(error)
+          res.writeHead(error.status, {'Content-type': 'application/json'})
+          res.write(JSON.stringify({body: error.message}))
+          res.end()
+        })
     })
-    const response = yield supertest(server).get('/').set('csrf-token', csrf.create(csrfSecret)).expect(200)
+    yield supertest(server).get('/').set('csrf-token', csrf.create(csrfSecret)).expect(200)
   })
 
   it('should pass the request when x-csrf-token header is present', function * () {
@@ -720,8 +717,7 @@ describe('Shield', function () {
       response.header = function (key, value) {
         res.setHeader(key, value)
       }
-      response.cookie = function (key, value) {
-      }
+      response.cookie = function (key, value) {}
       req.match = function () {
         return false
       }
@@ -729,18 +725,18 @@ describe('Shield', function () {
       co(function * () {
         return yield shield.handle(req, response, function * () {})
       })
-      .then(function () {
-        res.writeHead(200, {"Content-type": "application/json"})
-        res.end()
-      })
-      .catch(function (error) {
-        console.log(error)
-        res.writeHead(error.status, {"Content-type": "application/json"})
-        res.write(JSON.stringify({body:error.message}))
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'Content-type': 'application/json'})
+          res.end()
+        })
+        .catch(function (error) {
+          console.log(error)
+          res.writeHead(error.status, {'Content-type': 'application/json'})
+          res.write(JSON.stringify({body: error.message}))
+          res.end()
+        })
     })
-    const response = yield supertest(server).get('/').set('x-csrf-token', csrf.create(csrfSecret)).expect(200)
+    yield supertest(server).get('/').set('x-csrf-token', csrf.create(csrfSecret)).expect(200)
   })
 
   it('should pass the request when x-xsrf-token header is present', function * () {
@@ -776,24 +772,299 @@ describe('Shield', function () {
       response.header = function (key, value) {
         res.setHeader(key, value)
       }
-      response.cookie = function (key, value) {
-      }
+      response.cookie = function (key, value) {}
 
       co(function * () {
         return yield shield.handle(req, response, function * () {})
       })
-      .then(function () {
-        res.writeHead(200, {"Content-type": "application/json"})
-        res.end()
-      })
-      .catch(function (error) {
-        console.log(error)
-        res.writeHead(error.status, {"Content-type": "application/json"})
-        res.write(JSON.stringify({body:error.message}))
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'Content-type': 'application/json'})
+          res.end()
+        })
+        .catch(function (error) {
+          console.log(error)
+          res.writeHead(error.status, {'Content-type': 'application/json'})
+          res.write(JSON.stringify({body: error.message}))
+          res.end()
+        })
     })
-    const response = yield supertest(server).get('/').set('x-xsrf-token', csrf.create(csrfSecret)).expect(200)
+    yield supertest(server).get('/').set('x-xsrf-token', csrf.create(csrfSecret)).expect(200)
+  })
+
+  it('should throw error when host and origin are not the same', function * () {
+    const newConfig = defaultConfig
+    newConfig.csrf.enable = true
+    newConfig.csrf.compareHostAndOrigin = true
+    const Config = {
+      get: function () {
+        return newConfig
+      }
+    }
+    const shield = new Shield(Config, View)
+    const server = http.createServer(function (req, res) {
+      req.request = req
+      req.session = {
+        get: function * () {
+          return csrfSecret
+        },
+        put: function * () {}
+      }
+      req.method = function () {
+        return 'POST'
+      }
+      req.input = function () {}
+      req.hostname = function () {
+        return req.headers['host']
+      }
+
+      req.header = function (key) {
+        return req.headers[key]
+      }
+      req.match = function () {
+        return false
+      }
+
+      const response = {}
+      response.header = function (key, value) {
+        res.setHeader(key, value)
+      }
+      response.cookie = function (key, value) {}
+
+      co(function * () {
+        return yield shield.handle(req, response, function * () {})
+      })
+        .then(function () {
+          res.writeHead(200, {'Content-type': 'application/json'})
+          res.end()
+        })
+        .catch(function (error) {
+          res.writeHead(error.status, {'Content-type': 'application/json'})
+          res.write(JSON.stringify({body: error.message}))
+          res.end()
+        })
+    })
+    const response = yield supertest(server).get('/').set('origin', 'http://attack.dev').set('x-xsrf-token', csrf.create(csrfSecret)).expect(403)
+    expect(response.body.body).to.equal('host and origin mis-match')
+  })
+
+  it('should work fine when host and origin are same', function * () {
+    const newConfig = defaultConfig
+    newConfig.csrf.enable = true
+    newConfig.csrf.compareHostAndOrigin = true
+    const Config = {
+      get: function () {
+        return newConfig
+      }
+    }
+    const shield = new Shield(Config, View)
+    const server = http.createServer(function (req, res) {
+      req.request = req
+      req.session = {
+        get: function * () {
+          return csrfSecret
+        },
+        put: function * () {}
+      }
+      req.method = function () {
+        return 'POST'
+      }
+      req.input = function () {}
+      req.hostname = function () {
+        return req.headers['host'].split(':')[0]
+      }
+
+      req.header = function (key) {
+        return req.headers[key]
+      }
+      req.match = function () {
+        return false
+      }
+
+      const response = {}
+      response.header = function (key, value) {
+        res.setHeader(key, value)
+      }
+      response.cookie = function (key, value) {}
+
+      co(function * () {
+        return yield shield.handle(req, response, function * () {})
+      })
+        .then(function () {
+          res.writeHead(200, {'Content-type': 'application/json'})
+          res.end()
+        })
+        .catch(function (error) {
+          res.writeHead(error.status, {'Content-type': 'application/json'})
+          res.write(JSON.stringify({body: error.message}))
+          res.end()
+        })
+    })
+    yield supertest(server).get('/').set('origin', 'http://127.0.0.1').set('x-xsrf-token', csrf.create(csrfSecret)).expect(200)
+  })
+
+  it('should fallback to referer when origin is not defined', function * () {
+    const newConfig = defaultConfig
+    newConfig.csrf.enable = true
+    newConfig.csrf.compareHostAndOrigin = true
+    const Config = {
+      get: function () {
+        return newConfig
+      }
+    }
+    const shield = new Shield(Config, View)
+    const server = http.createServer(function (req, res) {
+      req.request = req
+      req.session = {
+        get: function * () {
+          return csrfSecret
+        },
+        put: function * () {}
+      }
+      req.method = function () {
+        return 'POST'
+      }
+      req.input = function () {}
+      req.hostname = function () {
+        return req.headers['host'].split(':')[0]
+      }
+
+      req.header = function (key) {
+        return req.headers[key]
+      }
+      req.match = function () {
+        return false
+      }
+
+      const response = {}
+      response.header = function (key, value) {
+        res.setHeader(key, value)
+      }
+      response.cookie = function (key, value) {}
+
+      co(function * () {
+        return yield shield.handle(req, response, function * () {})
+      })
+        .then(function () {
+          res.writeHead(200, {'Content-type': 'application/json'})
+          res.end()
+        })
+        .catch(function (error) {
+          res.writeHead(error.status, {'Content-type': 'application/json'})
+          res.write(JSON.stringify({body: error.message}))
+          res.end()
+        })
+    })
+    yield supertest(server).get('/').set('referer', 'http://127.0.0.1:3333/profile').set('x-xsrf-token', csrf.create(csrfSecret)).expect(200)
+  })
+
+  it('should throw error when origin or referer are not defined', function * () {
+    const newConfig = defaultConfig
+    newConfig.csrf.enable = true
+    newConfig.csrf.compareHostAndOrigin = true
+    const Config = {
+      get: function () {
+        return newConfig
+      }
+    }
+    const shield = new Shield(Config, View)
+    const server = http.createServer(function (req, res) {
+      req.request = req
+      req.session = {
+        get: function * () {
+          return csrfSecret
+        },
+        put: function * () {}
+      }
+      req.method = function () {
+        return 'POST'
+      }
+      req.input = function () {}
+      req.hostname = function () {
+        return req.headers['host'].split(':')[0]
+      }
+
+      req.header = function (key) {
+        return req.headers[key]
+      }
+      req.match = function () {
+        return false
+      }
+
+      const response = {}
+      response.header = function (key, value) {
+        res.setHeader(key, value)
+      }
+      response.cookie = function (key, value) {}
+
+      co(function * () {
+        return yield shield.handle(req, response, function * () {})
+      })
+        .then(function () {
+          res.writeHead(200, {'Content-type': 'application/json'})
+          res.end()
+        })
+        .catch(function (error) {
+          res.writeHead(error.status, {'Content-type': 'application/json'})
+          res.write(JSON.stringify({body: error.message}))
+          res.end()
+        })
+    })
+    yield supertest(server).get('/').set('x-xsrf-token', csrf.create(csrfSecret)).expect(403)
+  })
+
+  it('should skip host origin match when compareHostAndOrigin is set to false', function * () {
+    const newConfig = defaultConfig
+    newConfig.csrf.enable = true
+    newConfig.csrf.compareHostAndOrigin = false
+    const Config = {
+      get: function () {
+        return newConfig
+      }
+    }
+    const shield = new Shield(Config, View)
+    const server = http.createServer(function (req, res) {
+      req.request = req
+      req.session = {
+        get: function * () {
+          return csrfSecret
+        },
+        put: function * () {}
+      }
+      req.method = function () {
+        return 'POST'
+      }
+      req.input = function () {}
+      req.hostname = function () {
+        return req.headers['host'].split(':')[0]
+      }
+
+      req.header = function (key) {
+        return req.headers[key]
+      }
+      req.match = function () {
+        return false
+      }
+
+      const response = {}
+      response.header = function (key, value) {
+        res.setHeader(key, value)
+      }
+      response.cookie = function (key, value) {}
+
+      co(function * () {
+        return yield shield.handle(req, response, function * () {})
+      })
+        .then(function () {
+          res.writeHead(200, {'Content-type': 'application/json'})
+          res.end()
+        })
+        .catch(function (error) {
+          res.writeHead(error.status, {'Content-type': 'application/json'})
+          res.write(JSON.stringify({body: error.message}))
+          res.end()
+        })
+    })
+    yield supertest(server).get('/').set('x-xsrf-token', csrf.create(csrfSecret)).expect(200)
   })
 
   it('should setup csp header with given values', function * () {
@@ -830,22 +1101,21 @@ describe('Shield', function () {
       response.header = function (key, value) {
         res.setHeader(key, value)
       }
-      response.cookie = function (key, value) {
-      }
+      response.cookie = function (key, value) {}
 
       co(function * () {
         return yield shield.handle(req, response, function * () {})
       })
-      .then(function () {
-        res.writeHead(200, {"Content-type": "application/json"})
-        res.end()
-      })
-      .catch(function (error) {
-        console.log(error)
-        res.writeHead(error.status, {"Content-type": "application/json"})
-        res.write(JSON.stringify({body:error.message}))
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'Content-type': 'application/json'})
+          res.end()
+        })
+        .catch(function (error) {
+          console.log(error)
+          res.writeHead(error.status, {'Content-type': 'application/json'})
+          res.write(JSON.stringify({body: error.message}))
+          res.end()
+        })
     })
     const response = yield supertest(server).get('/').expect(200)
     expect(response.headers).to.have.property('content-security-policy')
@@ -865,7 +1135,7 @@ describe('Shield', function () {
     }
     const altView = {
       global: function (key, value) {
-        if(key === 'cspMeta') {
+        if (key === 'cspMeta') {
           viewGlobalValue = value
         }
       },
@@ -895,28 +1165,27 @@ describe('Shield', function () {
       response.header = function (key, value) {
         res.setHeader(key, value)
       }
-      response.cookie = function (key, value) {
-      }
+      response.cookie = function (key, value) {}
 
       co(function * () {
         return yield shield.handle(req, response, function * () {})
       })
-      .then(function () {
-        res.writeHead(200, {"Content-type": "application/json"})
-        res.end()
-      })
-      .catch(function (error) {
-        console.log(error)
-        res.writeHead(error.status, {"Content-type": "application/json"})
-        res.write(JSON.stringify({body:error.message}))
-        res.end()
-      })
+        .then(function () {
+          res.writeHead(200, {'Content-type': 'application/json'})
+          res.end()
+        })
+        .catch(function (error) {
+          console.log(error)
+          res.writeHead(error.status, {'Content-type': 'application/json'})
+          res.write(JSON.stringify({body: error.message}))
+          res.end()
+        })
     })
-    const response = yield supertest(server).get('/').expect(200)
-    const globalMetaTags = viewGlobalValue.split("\n")
+    yield supertest(server).get('/').expect(200)
+    const globalMetaTags = viewGlobalValue.split('\n')
     expect(globalMetaTags).to.have.length(3)
-    expect(globalMetaTags[0]).to.equal(`<meta http-equiv="Content-Security-Policy" content="default-src 'self'; ">`)
-    expect(globalMetaTags[1]).to.equal(`<meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; ">`)
-    expect(globalMetaTags[2]).to.equal(`<meta http-equiv="X-WebKit-CSP" content="default-src 'self'; ">`)
+    expect(globalMetaTags[0]).to.equal('<meta http-equiv="Content-Security-Policy" content="default-src \'self\'; ">')
+    expect(globalMetaTags[1]).to.equal('<meta http-equiv="X-Content-Security-Policy" content="default-src \'self\'; ">')
+    expect(globalMetaTags[2]).to.equal('<meta http-equiv="X-WebKit-CSP" content="default-src \'self\'; ">')
   })
 })
