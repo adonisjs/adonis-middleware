@@ -485,4 +485,112 @@ describe('Cors', function () {
     })
     yield supertest(server).get('/').set('origin', 'localhost').expect(200)
   })
+
+  it('should set only required headers when request is not for OPTIONS', function * () {
+    const Config = {
+      get: function (key) {
+        key = key.split('.')[1]
+        const options = {
+          origin: true,
+          methods: 'GET, PUT, POST',
+          headers: true,
+          exposeHeaders: 'Content-Language, Content-Type',
+          credentials: true,
+          maxAge: 90
+        }
+        return options[key]
+      }
+    }
+
+    const cors = new Cors(Config)
+    const server = http.createServer(function (req, res) {
+      req.header = function (key) {
+        return req.headers[key]
+      }
+      req.method = function () {
+        return 'GET'
+      }
+      res.header = function (key, value) {
+        res.setHeader(key, value)
+      }
+      res.status = function (code) {
+        res.writeHead(code)
+        return res
+      }
+      res.send = function (code) {}
+      co(function * () {
+        return yield cors.handle(req, res, function * () {})
+      })
+        .then(function () {
+          res.end()
+        })
+        .catch(function (error) {
+          console.log(error)
+          res.writeHead(500)
+          res.end()
+        })
+    })
+
+    const response = yield supertest(server).get('/').set('origin', 'localhost').expect(200)
+    expect(response.headers['access-control-allow-origin']).to.equal('localhost')
+    expect(response.headers['access-control-allow-credentials']).to.equal('true')
+    expect(response.headers['access-control-expose-headers']).to.equal('Content-Language, Content-Type')
+    expect(response.headers['access-control-allow-methods']).to.equal(undefined)
+    expect(response.headers['access-control-allow-max-age']).to.equal(undefined)
+    expect(response.headers['access-control-allow-headers']).to.equal(undefined)
+  })
+
+  it('should set all headers when request is for OPTIONS', function * () {
+    const Config = {
+      get: function (key) {
+        key = key.split('.')[1]
+        const options = {
+          origin: true,
+          methods: 'GET, PUT, POST',
+          headers: true,
+          exposeHeaders: 'Content-Language, Content-Type',
+          credentials: true,
+          maxAge: 90
+        }
+        return options[key]
+      }
+    }
+
+    const cors = new Cors(Config)
+    const server = http.createServer(function (req, res) {
+      req.header = function (key) {
+        return req.headers[key]
+      }
+      req.method = function () {
+        return 'OPTIONS'
+      }
+      res.header = function (key, value) {
+        res.setHeader(key, value)
+      }
+      res.status = function (code) {
+        res.writeHead(code)
+        return res
+      }
+      res.send = function (code) {}
+      co(function * () {
+        return yield cors.handle(req, res, function * () {})
+      })
+        .then(function () {
+          res.end()
+        })
+        .catch(function (error) {
+          console.log(error)
+          res.writeHead(500)
+          res.end()
+        })
+    })
+
+    const response = yield supertest(server).options('/').set('origin', 'localhost').set('Access-Control-Request-Headers', 'X-Custom-Header').expect(204)
+    expect(response.headers['access-control-allow-origin']).to.equal('localhost')
+    expect(response.headers['access-control-allow-credentials']).to.equal('true')
+    expect(response.headers['access-control-expose-headers']).to.equal('Content-Language, Content-Type')
+    expect(response.headers['access-control-allow-methods']).to.equal('GET, PUT, POST')
+    expect(response.headers['access-control-allow-max-age']).to.equal('90')
+    expect(response.headers['access-control-allow-headers']).to.equal('X-Custom-Header')
+  })
 })
