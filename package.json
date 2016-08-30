@@ -38,9 +38,6 @@
     "node-guard": "^1.0.0",
     "node-uuid": "^1.4.7"
   },
-  "peerDependencies": {
-    "adonis-fold": "^3.0.2"
-  },
   "devDependencies": {
     "adonis-fold": "^3.0.2",
     "chai": "^3.5.0",
