@@ -68,16 +68,7 @@ class Cors {
      * required headers to be defined on every request
      */
     response.header('Access-Control-Allow-Origin', this._getOrigin(request.header('origin')))
-    response.header('Access-Control-Allow-Methods', this.methods)
     response.header('Access-Control-Allow-Credentials', this.credentials)
-
-    /**
-     * setting up cors headers only if they are not set to false.
-     */
-    const corsHeaders = this._getHeaders(request.header('Access-Control-Request-Headers'))
-    if (corsHeaders) {
-      response.header('Access-Control-Allow-Headers', corsHeaders)
-    }
 
     /**
      * setting up exposed headers if defined
@@ -87,22 +78,31 @@ class Cors {
     }
 
     /**
+     * if request is not for OPTIONS yield next. Otherwise set
+     * CORS headers.
+     */
+    if (request.method() !== 'OPTIONS') {
+      yield next
+      return
+    }
+
+    response.header('Access-Control-Allow-Methods', this.methods)
+
+    /**
+     * setting up cors headers only if they are not set to false.
+     */
+    const corsHeaders = this._getHeaders(request.header('access-control-request-headers'))
+    if (corsHeaders) {
+      response.header('Access-Control-Allow-Headers', corsHeaders)
+    }
+
+    /**
      * setting up max age if defined
      */
     if (this.maxAge) {
       response.header('Access-Control-Allow-Max-Age', this.maxAge)
     }
-
-    /**
-     * if request is for OPTIONS send 204 otherwise yield it to
-     * next middleware
-     */
-    if (request.method() === 'OPTIONS') {
-      response.status(204).send()
-      return
-    }
-
-    yield next
+    response.status(204).send()
   }
 
 }

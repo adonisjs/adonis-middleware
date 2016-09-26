@@ -1,3 +1,13 @@
+<a name="1.0.8"></a>
+## [1.0.8](https://github.com/adonisjs/adonis-middleware/compare/v1.0.7...v1.0.8) (2016-09-26)
+
+
+### Bug Fixes
+
+* **cors:** set proper headers when request is not options ([920320a](https://github.com/adonisjs/adonis-middleware/commit/920320a))
+
+
+
 ### Features
 
 * **shield:csrf:** add support for host and origin match ([8cf1ac5](https://github.com/adonisjs/adonis-middleware/commit/8cf1ac5))
