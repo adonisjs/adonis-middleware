@@ -1,6 +1,6 @@
 {
   "name": "adonis-middleware",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "List of official middleware for adonis-framework",
   "main": "index.js",
   "scripts": {
