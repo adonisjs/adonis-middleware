@@ -1,3 +1,13 @@
+<a name="1.0.9"></a>
+## [1.0.9](https://github.com/adonisjs/adonis-middleware/compare/v1.0.8...v1.0.9) (2016-11-18)
+
+
+### Bug Fixes
+
+* **csrf:** do not encrypt xsrf-token ([6bbf1ef](https://github.com/adonisjs/adonis-middleware/commit/6bbf1ef)), closes [#5](https://github.com/adonisjs/adonis-middleware/issues/5)
+
+
+
 <a name="1.0.8"></a>
 ## [1.0.8](https://github.com/adonisjs/adonis-middleware/compare/v1.0.7...v1.0.8) (2016-09-26)
 
