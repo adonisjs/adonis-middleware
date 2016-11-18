@@ -61,6 +61,7 @@ describe('Shield', function () {
         return false
       }
       const response = {}
+      response.response = res
       response.header = function (key, value) {
         res.setHeader(key, value)
       }
@@ -107,6 +108,7 @@ describe('Shield', function () {
         return false
       }
       const response = {}
+      response.response = res
       response.header = function (key, value) {
         res.setHeader(key, value)
       }
@@ -153,6 +155,7 @@ describe('Shield', function () {
         return false
       }
       const response = {}
+      response.response = res
       response.header = function (key, value) {
         res.setHeader(key, value)
       }
@@ -205,6 +208,7 @@ describe('Shield', function () {
       }
 
       const response = {}
+      response.response = res
       response.header = function (key, value) {
         res.setHeader(key, value)
       }
@@ -258,6 +262,7 @@ describe('Shield', function () {
       }
 
       const response = {}
+      response.response = res
       response.header = function (key, value) {
         res.setHeader(key, value)
       }
@@ -311,6 +316,7 @@ describe('Shield', function () {
       }
 
       const response = {}
+      response.response = res
       response.header = function (key, value) {
         res.setHeader(key, value)
       }
@@ -365,6 +371,7 @@ describe('Shield', function () {
       }
 
       const response = {}
+      response.response = res
       response.header = function (key, value) {
         res.setHeader(key, value)
       }
@@ -389,7 +396,6 @@ describe('Shield', function () {
 
   it('should set csrfToken method on request object when csrf is enabled', function * () {
     const newConfig = defaultConfig
-    let cookieValue = null
     newConfig.csrf.enable = true
     const Config = {
       get: function () {
@@ -419,11 +425,9 @@ describe('Shield', function () {
       }
 
       const response = {}
+      response.response = res
       response.header = function (key, value) {
         res.setHeader(key, value)
-      }
-      response.cookie = function (key, value) {
-        cookieValue = value
       }
 
       co(function * () {
@@ -443,12 +447,10 @@ describe('Shield', function () {
     const response = yield supertest(server).get('/').expect(200)
     expect(response.body.token).not.equal(null)
     expect(response.body.token).not.equal(undefined)
-    expect(response.body.token).to.equal(cookieValue)
   })
 
   it('should add csrfToken view helper method when csrf is enabled', function * () {
     const newConfig = defaultConfig
-    let cookieValue = null
     let viewGlobalValue = null
     newConfig.csrf.enable = true
     const Config = {
@@ -487,11 +489,9 @@ describe('Shield', function () {
       }
 
       const response = {}
+      response.response = res
       response.header = function (key, value) {
         res.setHeader(key, value)
-      }
-      response.cookie = function (key, value) {
-        cookieValue = value
       }
 
       co(function * () {
@@ -511,12 +511,10 @@ describe('Shield', function () {
     yield supertest(server).get('/').expect(200)
     expect(viewGlobalValue).not.equal(null)
     expect(viewGlobalValue).not.equal(undefined)
-    expect(viewGlobalValue).to.equal(cookieValue)
   })
 
   it('should add csrfField view helper method when csrf is enabled', function * () {
     const newConfig = defaultConfig
-    let cookieValue = null
     let viewGlobalValue = null
     newConfig.csrf.enable = true
     const Config = {
@@ -555,11 +553,9 @@ describe('Shield', function () {
       }
 
       const response = {}
+      response.response = res
       response.header = function (key, value) {
         res.setHeader(key, value)
-      }
-      response.cookie = function (key, value) {
-        cookieValue = value
       }
 
       co(function * () {
@@ -576,10 +572,10 @@ describe('Shield', function () {
           res.end()
         })
     })
-    yield supertest(server).get('/').expect(200)
+    const res = yield supertest(server).get('/').expect(200)
     expect(viewGlobalValue).not.equal(null)
     expect(viewGlobalValue).not.equal(undefined)
-    expect(viewGlobalValue).to.equal(`<input type="hidden" name="_csrf" value="${cookieValue}">`)
+    expect(viewGlobalValue).to.equal(`<input type="hidden" name="_csrf" value="${res.body.token}">`)
   })
 
   it('should pass the request when _csrf value is present as a query string', function * () {
@@ -613,6 +609,7 @@ describe('Shield', function () {
       }
 
       const response = {}
+      response.response = res
       response.header = function (key, value) {
         res.setHeader(key, value)
       }
@@ -665,6 +662,7 @@ describe('Shield', function () {
       }
 
       const response = {}
+      response.response = res
       response.header = function (key, value) {
         res.setHeader(key, value)
       }
@@ -714,6 +712,7 @@ describe('Shield', function () {
       }
 
       const response = {}
+      response.response = res
       response.header = function (key, value) {
         res.setHeader(key, value)
       }
@@ -769,6 +768,7 @@ describe('Shield', function () {
       }
 
       const response = {}
+      response.response = res
       response.header = function (key, value) {
         res.setHeader(key, value)
       }
@@ -825,6 +825,7 @@ describe('Shield', function () {
       }
 
       const response = {}
+      response.response = res
       response.header = function (key, value) {
         res.setHeader(key, value)
       }
@@ -881,6 +882,7 @@ describe('Shield', function () {
       }
 
       const response = {}
+      response.response = res
       response.header = function (key, value) {
         res.setHeader(key, value)
       }
@@ -936,6 +938,7 @@ describe('Shield', function () {
       }
 
       const response = {}
+      response.response = res
       response.header = function (key, value) {
         res.setHeader(key, value)
       }
@@ -991,6 +994,7 @@ describe('Shield', function () {
       }
 
       const response = {}
+      response.response = res
       response.header = function (key, value) {
         res.setHeader(key, value)
       }
@@ -1046,6 +1050,7 @@ describe('Shield', function () {
       }
 
       const response = {}
+      response.response = res
       response.header = function (key, value) {
         res.setHeader(key, value)
       }
@@ -1098,6 +1103,7 @@ describe('Shield', function () {
       }
 
       const response = {}
+      response.response = res
       response.header = function (key, value) {
         res.setHeader(key, value)
       }
@@ -1162,6 +1168,7 @@ describe('Shield', function () {
       }
 
       const response = {}
+      response.response = res
       response.header = function (key, value) {
         res.setHeader(key, value)
       }
