@@ -9,7 +9,14 @@
     "lint": "standard src/**/*.js test/*.js"
   },
   "standard": {
-    "global": ["use", "it", "describe", "context", "before", "after"]
+    "global": [
+      "use",
+      "it",
+      "describe",
+      "context",
+      "before",
+      "after"
+    ]
   },
   "repository": {
     "type": "git",
@@ -33,6 +40,7 @@
     "csrf": "^3.0.3",
     "formidable": "^1.0.17",
     "lodash": "^4.14.1",
+    "node-cookie": "^1.0.3",
     "node-csp": "^1.0.1",
     "node-exceptions": "^1.0.1",
     "node-guard": "^1.0.0",

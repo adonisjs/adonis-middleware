@@ -9,6 +9,7 @@
 const guard = use('node-guard')
 const csp = use('node-csp')
 const uuid = use('node-uuid')
+const nodeCookie = use('node-cookie')
 const Csrf = use('csrf')
 const url = use('url')
 
@@ -121,10 +122,14 @@ class Shield {
     const csrfToken = this.csrf.create(csrfSecret)
 
     /**
-     * adding token to the cookie to be used by
-     * JS frameworks like Angular
+     * adding token to the cookie to be used by JS frameworks
+     * like Angular. Added a check for response.plainCookie
+     * for backward compatibility, since plainCookie has
+     * been added recently.
      */
-    response.cookie('XSRF-TOKEN', csrfToken)
+    typeof (response.plainCookie) === 'function'
+    ? response.plainCookie('XSRF-TOKEN', csrfToken)
+    : nodeCookie.create(request.request, response.response, 'XSRF-TOKEN', csrfToken)
 
     /**
      * creating request helper to be used under
