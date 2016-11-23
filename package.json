@@ -44,7 +44,7 @@
     "node-csp": "^1.0.1",
     "node-exceptions": "^1.0.1",
     "node-guard": "^1.0.0",
-    "node-uuid": "^1.4.7"
+    "uuid": "^3.0.0"
   },
   "devDependencies": {
     "adonis-fold": "^3.0.2",
