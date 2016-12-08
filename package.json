@@ -37,27 +37,27 @@
   "dependencies": {
     "bytes": "^2.4.0",
     "co-body": "^4.2.0",
-    "csrf": "^3.0.3",
+    "csrf": "^3.0.4",
     "formidable": "^1.0.17",
-    "lodash": "^4.14.1",
+    "lodash": "^4.17.2",
     "node-cookie": "^1.0.3",
     "node-csp": "^1.0.1",
-    "node-exceptions": "^1.0.1",
+    "node-exceptions": "^1.0.3",
     "node-guard": "^1.0.0",
     "uuid": "^3.0.0"
   },
   "devDependencies": {
-    "adonis-fold": "^3.0.2",
+    "adonis-fold": "^3.0.3",
     "chai": "^3.5.0",
     "co": "^4.6.0",
     "co-mocha": "^1.1.3",
-    "coveralls": "^2.11.12",
-    "cz-conventional-changelog": "^1.1.6",
-    "istanbul": "^0.4.4",
-    "mocha": "^3.0.0",
+    "coveralls": "^2.11.15",
+    "cz-conventional-changelog": "^1.2.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.2.0",
     "mocha-lcov-reporter": "^1.2.0",
-    "standard": "^7.1.2",
-    "supertest": "^2.0.0"
+    "standard": "^8.6.0",
+    "supertest": "^2.0.1"
   },
   "config": {
     "commitizen": {
