@@ -8,7 +8,7 @@
 
 const guard = use('node-guard')
 const csp = use('node-csp')
-const uuid = use('node-uuid')
+const uuid = use('uuid')
 const nodeCookie = use('node-cookie')
 const Csrf = use('csrf')
 const url = use('url')

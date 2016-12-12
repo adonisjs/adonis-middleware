@@ -13,7 +13,7 @@ const chai = require('chai')
 const expect = chai.expect
 const http = require('http')
 const co = require('co')
-const csrf = new (require('csrf'))
+const csrf = new (require('csrf'))()
 const supertest = require('supertest')
 let csrfSecret = null
 require('co-mocha')
