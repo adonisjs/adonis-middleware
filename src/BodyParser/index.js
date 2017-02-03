@@ -9,11 +9,14 @@
  * file that was distributed with this source code.
 */
 
-const formidable = use('formidable')
-const coBody = use('co-body')
-const bytes = use('bytes')
+const formidable = require('formidable')
+const coBody = require('co-body')
+const bytes = require('bytes')
+const qs = require('qs')
 const contentTypes = require('./contentTypes')
 const NE = require('node-exceptions')
+const _ = require('lodash')
+
 class RequestEntityTooLarge extends NE.LogicalException {}
 
 class BodyParser {
@@ -90,6 +93,9 @@ class BodyParser {
   _multipart (request, options) {
     return new Promise(function (resolve, reject) {
       const form = new formidable.IncomingForm(options)
+      const processedFiles = {}
+      let buff = ''
+
       /**
        * It is a shame that formbidable does not handle max size
        * on file uploads size :(
@@ -101,12 +107,29 @@ class BodyParser {
         }
       })
 
-      form.parse(request.request, function (error, fields, files) {
-        if (error) {
-          return reject(error)
-        }
+      form.on('error', function (error) {
+        throw error
+      })
+
+      form.on('file', function (name, value) {
+        processedFiles[name] = processedFiles[name] || []
+        processedFiles[name] = processedFiles[name].concat(value)
+      })
+
+      form.on('field', function (name, value) {
+        buff += name + '=' + value + '&'
+      })
+
+      form.on('end', function () {
+        const fields = buff && buff.length ? qs.parse(buff) : {}
+        const files = _.transform(processedFiles, (result, files, key) => {
+          result[key] = files.length === 1 ? files[0] : files
+          return result
+        }, {})
         resolve({fields, files, raw: null})
       })
+
+      form.parse(request.request)
     })
   }
 
@@ -126,6 +149,7 @@ class BodyParser {
       files: {},
       raw: null
     }
+
     if (request.is(contentTypes.json)) {
       formBody.fields = yield coBody.json(request.request, this.formOptions)
     } else if (request.is(contentTypes.form)) {

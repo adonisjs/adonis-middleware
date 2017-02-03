@@ -213,4 +213,109 @@ describe('BodyParser', function () {
     expect(response.body.error.message).to.equal('Uploaded files size is too large')
     expect(response.body.error.name).to.equal('RequestEntityTooLarge')
   })
+
+  it('should return array fields as an array when type is form-data', function * () {
+    const bodyParser = new BodyParser(Config)
+    const server = http.createServer(function (req, res) {
+      req.request = req
+      req.is = function (types) {
+        return types.indexOf(req.headers['content-type']) > -1
+      }
+      req.hasBody = function () {
+        return true
+      }
+      co(function * () {
+        return yield bodyParser.handle(req, res, function * () {})
+      })
+        .then(function () {
+          res.writeHead(200, {'content-type': 'application/json'})
+          res.write(JSON.stringify(req._body))
+          res.end()
+        })
+        .catch(function (error) {
+          res.writeHead(500, {'Content-Type': 'application/json'})
+          res.write(JSON.stringify({error: error.message}))
+          res.end()
+        })
+    })
+
+    const response = yield supertest(server).post('/').send({name: ['virk', 'nikk'], age: 22}).type('form').expect(200)
+    expect(response.body).deep.equal({name: ['virk', 'nikk'], age: '22'})
+  })
+
+  it('should return array fields as an array when type is multipart/form-data', function * () {
+    const bodyParser = new BodyParser(Config)
+    const server = http.createServer(function (req, res) {
+      req.request = req
+      req.is = function (types) {
+        return types[0] === 'multipart/form-data'
+      }
+      req.hasBody = function () {
+        return true
+      }
+      co(function * () {
+        return yield bodyParser.handle(req, res, function * () {})
+      })
+        .then(function () {
+          res.writeHead(200, {'content-type': 'application/json'})
+          res.write(JSON.stringify({body: req._body, files: req._files}))
+          res.end()
+        })
+        .catch(function (error) {
+          res.writeHead(500, {'Content-Type': 'application/json'})
+          res.write(JSON.stringify({error: error.message}))
+          res.end()
+        })
+    })
+
+    const response = yield supertest(server)
+      .post('/')
+      .attach('package', path.join(__dirname, '../package.json'))
+      .field('name', ['virk', 'nikk'])
+      .type('form')
+      .expect(200)
+
+    expect(response.body.body).deep.equal({name: ['virk', 'nikk']})
+    expect(response.body.files).to.have.property('package')
+    expect(response.body.files.package).to.have.property('type')
+    expect(response.body.files.package).to.have.property('name')
+    expect(response.body.files.package).to.have.property('path')
+    expect(response.body.files.package).to.have.property('size')
+  })
+
+  it('should return array files when multiple files have been uploaded', function * () {
+    const bodyParser = new BodyParser(Config)
+    const server = http.createServer(function (req, res) {
+      req.request = req
+      req.is = function (types) {
+        return types[0] === 'multipart/form-data'
+      }
+      req.hasBody = function () {
+        return true
+      }
+      co(function * () {
+        return yield bodyParser.handle(req, res, function * () {})
+      })
+        .then(function () {
+          res.writeHead(200, {'content-type': 'application/json'})
+          res.write(JSON.stringify(req._files))
+          res.end()
+        })
+        .catch(function (error) {
+          res.writeHead(500, {'Content-Type': 'application/json'})
+          res.write(JSON.stringify({error: error.message}))
+          res.end()
+        })
+    })
+
+    const response = yield supertest(server)
+      .post('/')
+      .attach('package', path.join(__dirname, '../package.json'))
+      .attach('package', path.join(__dirname, '../readme.md'))
+      .type('form')
+      .expect(200)
+
+    expect(response.body.package[0].name).to.equal('package.json')
+    expect(response.body.package[1].name).to.equal('readme.md')
+  })
 })
