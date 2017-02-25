@@ -1,3 +1,13 @@
+<a name="1.0.11"></a>
+## [1.0.11](https://github.com/adonisjs/adonis-middleware/compare/v1.0.10...v1.0.11) (2017-02-25)
+
+
+### Bug Fixes
+
+* **bodyParser:** parse array fields properly ([48dfb8c](https://github.com/adonisjs/adonis-middleware/commit/48dfb8c)), closes [#8](https://github.com/adonisjs/adonis-middleware/issues/8)
+
+
+
 <a name="1.0.10"></a>
 ## [1.0.10](https://github.com/adonisjs/adonis-middleware/compare/v1.0.9...v1.0.10) (2016-12-12)
 
