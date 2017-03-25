@@ -1,3 +1,13 @@
+<a name="1.0.12"></a>
+## [1.0.12](https://github.com/adonisjs/adonis-middleware/compare/v1.0.11...v1.0.12) (2017-03-25)
+
+
+### Bug Fixes
+
+* **middleware:** use response.viewInstance when available ([61f8aac](https://github.com/adonisjs/adonis-middleware/commit/61f8aac))
+
+
+
 <a name="1.0.11"></a>
 ## [1.0.11](https://github.com/adonisjs/adonis-middleware/compare/v1.0.10...v1.0.11) (2017-02-25)
 
