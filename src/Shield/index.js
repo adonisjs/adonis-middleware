@@ -43,6 +43,7 @@ class Shield {
   _setupCsp (request, response) {
     const cspValues = csp.build(request.request, this.shieldConfig.csp)
     let metaTags = []
+    const view = response.viewInstance || this.view
 
     /**
      * adding request helper method to return
@@ -67,12 +68,12 @@ class Shield {
      * @description view global variable to return csp string
      * as meta tags.
      */
-    this.view.global('cspMeta', this.view.viewsEnv.filters.safe(metaTags.join('\n')))
+    view.global('cspMeta', view.viewsEnv.filters.safe(metaTags.join('\n')))
 
     /**
      * @description nonce value to be used under view
      */
-    this.view.global('cspNonce', request.nonce())
+    view.global('cspNonce', request.nonce())
   }
 
   /**
@@ -102,6 +103,7 @@ class Shield {
    * @public
    */
   * _setupCsrf (request, response, csrfSecret) {
+    const view = response.viewInstance || this.view
     /**
      * generates a new csrf secret to be used while
      * verifying tokens
@@ -142,12 +144,12 @@ class Shield {
     /**
      * adding a new global to return the csrf token
      */
-    this.view.global('csrfToken', csrfToken)
+    view.global('csrfToken', csrfToken)
 
     /**
      * adding a view global to output the html field
      */
-    this.view.global('csrfField', this.view.viewsEnv.filters.safe(`<input type="hidden" name="_csrf" value="${csrfToken}">`))
+    view.global('csrfField', view.viewsEnv.filters.safe(`<input type="hidden" name="_csrf" value="${csrfToken}">`))
   }
 
   /**

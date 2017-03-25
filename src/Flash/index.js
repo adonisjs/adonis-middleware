@@ -34,12 +34,13 @@ class Flash {
     request.withOut = FlashMethods.without
     request.andWith = FlashMethods.andWith
     request.flash = FlashMethods.flash
+    const view = response.viewInstance || this.view
 
     /**
      * adding view global method to have access to old method from current
      * request
      */
-    this.view.global('old', function (key, defaultValue) {
+    view.global('old', function (key, defaultValue) {
       return request.old(key, defaultValue)
     })
 
@@ -47,7 +48,7 @@ class Flash {
      * attach flashMessages global to the view to get the actual flash
      * object.
      */
-    this.view.global('flashMessages', request._flashMessages.getValues)
+    view.global('flashMessages', request._flashMessages.getValues)
 
     yield next
   }
