@@ -108,6 +108,12 @@ class BodyParser {
       })
 
       form.on('error', function (error) {
+        /**
+         * Ignore aborted requests
+         */
+        if (error.message === 'Request aborted') {
+          return
+        }
         throw error
       })
 
