@@ -14,7 +14,6 @@ const coBody = require('co-body')
 const bytes = require('bytes')
 const contentTypes = require('./contentTypes')
 const NE = require('node-exceptions')
-const _ = require('lodash')
 const FormFields = require('./FormFields')
 
 class RequestEntityTooLarge extends NE.LogicalException {}
@@ -94,7 +93,7 @@ class BodyParser {
     return new Promise(function (resolve, reject) {
       const form = new formidable.IncomingForm(options)
       const fields = new FormFields()
-      const processedFiles = {}
+      const files = new FormFields()
 
       /**
        * It is a shame that formbidable does not handle max size
@@ -118,8 +117,7 @@ class BodyParser {
       })
 
       form.on('file', function (name, value) {
-        processedFiles[name] = processedFiles[name] || []
-        processedFiles[name] = processedFiles[name].concat(value)
+        files.add(name, value)
       })
 
       form.on('field', function (name, value) {
@@ -127,11 +125,7 @@ class BodyParser {
       })
 
       form.on('end', function () {
-        const files = _.transform(processedFiles, (result, files, key) => {
-          result[key] = files.length === 1 ? files[0] : files
-          return result
-        }, {})
-        resolve({fields: fields.get(), files, raw: null})
+        resolve({fields: fields.get(), files: files.get(), raw: null})
       })
 
       form.parse(request.request)
