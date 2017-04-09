@@ -1,6 +1,6 @@
 {
   "name": "adonis-middleware",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "List of official middleware for adonis-framework",
   "main": "index.js",
   "scripts": {
@@ -44,7 +44,6 @@
     "node-csp": "^1.0.1",
     "node-exceptions": "^1.0.3",
     "node-guard": "^1.0.0",
-    "qs": "^6.3.1",
     "uuid": "^3.0.1"
   },
   "devDependencies": {

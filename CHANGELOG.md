@@ -1,3 +1,15 @@
+<a name="1.0.13"></a>
+## [1.0.13](https://github.com/adonisjs/adonis-middleware/compare/v1.0.12...v1.0.13) (2017-04-09)
+
+
+### Bug Fixes
+
+* **bodyparser:** handle multipart fields with care ([7d17bc0](https://github.com/adonisjs/adonis-middleware/commit/7d17bc0)), closes [#10](https://github.com/adonisjs/adonis-middleware/issues/10)
+* **bodyParser:** ignore aborted requests ([beb29e5](https://github.com/adonisjs/adonis-middleware/commit/beb29e5)), closes [#9](https://github.com/adonisjs/adonis-middleware/issues/9)
+* **multipart:** process files via formFields class ([8b5dacd](https://github.com/adonisjs/adonis-middleware/commit/8b5dacd)), closes [#10](https://github.com/adonisjs/adonis-middleware/issues/10)
+
+
+
 <a name="1.0.12"></a>
 ## [1.0.12](https://github.com/adonisjs/adonis-middleware/compare/v1.0.11...v1.0.12) (2017-03-25)
 
