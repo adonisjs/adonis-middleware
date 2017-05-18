@@ -1195,4 +1195,103 @@ describe('Shield', function () {
     expect(globalMetaTags[1]).to.equal('<meta http-equiv="X-Content-Security-Policy" content="default-src \'self\'; ">')
     expect(globalMetaTags[2]).to.equal('<meta http-equiv="X-WebKit-CSP" content="default-src \'self\'; ">')
   })
+
+  it('should set proper XSRF-TOKEN cookie options', function * () {
+    const newConfig = defaultConfig
+    newConfig.csrf.enable = true
+    const Config = {
+      get: function () {
+        return newConfig
+      }
+    }
+    const shield = new Shield(Config, View)
+    const server = http.createServer(function (req, res) {
+      req.request = req
+      req.session = {
+        get: function * () {
+          return undefined
+        },
+        put: function * (key, value) {
+        }
+      }
+      req.method = function () {
+        return 'GET'
+      }
+      req.match = function () {
+        return false
+      }
+      const response = {}
+      response.response = res
+      response.header = function (key, value) {
+        res.setHeader(key, value)
+      }
+      response.cookie = function () {}
+      co(function * () {
+        return yield shield.handle(req, response, function * () {})
+      })
+        .then(function () {
+          res.writeHead(200, {'Content-type': 'application/json'})
+          res.end()
+        })
+        .catch(function (error) {
+          console.log(error)
+          res.writeHead(500, {'Content-type': 'application/json'})
+          res.end()
+        })
+    })
+    const response = yield supertest(server).get('/').expect(200)
+    expect(response.headers['set-cookie'][0]).to.include('Max-Age=7200')
+    expect(response.headers['set-cookie'][0]).to.include('Path=/')
+  })
+
+  it('give priority to config inside shield file', function * () {
+    const newConfig = defaultConfig
+    newConfig.csrf.cookieOptions = {
+      httpOnly: true,
+      maxAge: 3600
+    }
+    const Config = {
+      get: function () {
+        return newConfig
+      }
+    }
+    const shield = new Shield(Config, View)
+    const server = http.createServer(function (req, res) {
+      req.request = req
+      req.session = {
+        get: function * () {
+          return undefined
+        },
+        put: function * (key, value) {
+        }
+      }
+      req.method = function () {
+        return 'GET'
+      }
+      req.match = function () {
+        return false
+      }
+      const response = {}
+      response.response = res
+      response.header = function (key, value) {
+        res.setHeader(key, value)
+      }
+      response.cookie = function () {}
+      co(function * () {
+        return yield shield.handle(req, response, function * () {})
+      })
+        .then(function () {
+          res.writeHead(200, {'Content-type': 'application/json'})
+          res.end()
+        })
+        .catch(function (error) {
+          console.log(error)
+          res.writeHead(500, {'Content-type': 'application/json'})
+          res.end()
+        })
+    })
+    const response = yield supertest(server).get('/').expect(200)
+    expect(response.headers['set-cookie'][0]).to.include('Max-Age=3600')
+    expect(response.headers['set-cookie'][0]).to.include('HttpOnly')
+  })
 })

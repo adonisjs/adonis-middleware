@@ -12,6 +12,7 @@ const uuid = use('uuid')
 const nodeCookie = use('node-cookie')
 const Csrf = use('csrf')
 const url = use('url')
+const _ = require('lodash')
 
 class Shield {
 
@@ -122,6 +123,12 @@ class Shield {
      * @type {String}
      */
     const csrfToken = this.csrf.create(csrfSecret)
+    const cookieOptions = _.merge({
+      httpOnly: false,
+      sameSite: true,
+      path: '/',
+      maxAge: 7200
+    }, this.shieldConfig.csrf.cookieOptions)
 
     /**
      * adding token to the cookie to be used by JS frameworks
@@ -130,8 +137,8 @@ class Shield {
      * been added recently.
      */
     typeof (response.plainCookie) === 'function'
-    ? response.plainCookie('XSRF-TOKEN', csrfToken)
-    : nodeCookie.create(request.request, response.response, 'XSRF-TOKEN', csrfToken)
+    ? response.plainCookie('XSRF-TOKEN', csrfToken, cookieOptions)
+    : nodeCookie.create(request.request, response.response, 'XSRF-TOKEN', csrfToken, cookieOptions)
 
     /**
      * creating request helper to be used under
