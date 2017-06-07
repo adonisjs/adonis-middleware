@@ -1,3 +1,13 @@
+<a name="1.0.14"></a>
+## [1.0.14](https://github.com/adonisjs/adonis-middleware/compare/v1.0.13...v1.0.14) (2017-06-07)
+
+
+### Features
+
+* **csrf:** allow CSRF cookie options via csrf config ([f28b5d1](https://github.com/adonisjs/adonis-middleware/commit/f28b5d1))
+
+
+
 <a name="1.0.13"></a>
 ## [1.0.13](https://github.com/adonisjs/adonis-middleware/compare/v1.0.12...v1.0.13) (2017-04-09)
 
