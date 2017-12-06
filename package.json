@@ -6,7 +6,9 @@
   "scripts": {
     "test": "npm run lint && istanbul cover _mocha --report lcovonly -- -R spec test && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "coverage": "istanbul cover _mocha test --bail",
-    "lint": "standard src/**/*.js test/*.js"
+    "lint": "standard src/**/*.js test/*.js",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "standard": {
     "global": [
@@ -44,7 +46,8 @@
     "node-csp": "^1.0.1",
     "node-exceptions": "^1.0.3",
     "node-guard": "^1.0.0",
-    "uuid": "^3.0.1"
+    "uuid": "^3.0.1",
+    "snyk": "^1.53.0"
   },
   "devDependencies": {
     "adonis-fold": "^3.0.3",
@@ -63,5 +66,6 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  }
+  },
+  "snyk": true
 }
