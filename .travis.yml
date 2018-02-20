@@ -9,7 +9,7 @@ addons:
       - g++-4.8
 node_js:
 - node
-- 7.0.0
+- 8.0.0
 sudo: false
 install:
 - npm install --no-optional
