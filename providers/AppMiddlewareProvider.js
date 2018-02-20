@@ -29,6 +29,11 @@ class AppMiddlewareProvider extends ServiceProvider {
       const Shield = require('../src/Shield')
       return new Shield(Config, View)
     })
+
+    this.app.bind('Adonis/Middleware/TrimStrings', function (app) {
+      const TrimStrings = require('../src/TrimStrings')
+      return new TrimStrings(Config, View)
+    })
   }
 
 }
